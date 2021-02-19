@@ -1,6 +1,7 @@
 
 # Cellular Defense Automata
-<iframe src="https://player.vimeo.com/video/514490979" width="640" height="320" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+[![Alternate Text]({image-url})]({https://player.vimeo.com/video/514490979} "Link Title")
 
 On the left is a population of 1 million simulated over about 5 years with a masking rate of 80% at random in the population. The right is the same simulation but with a masking rate of only 60%
 
