@@ -1,9 +1,8 @@
 
 # Cellular Defense Automata
+![Cellular Defense Automata](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/f9f4c335-4399-4afb-bc5e-c7b181cfe1c4.gif?ClientID=vimeo-core-prod&Date=1613775833&Signature=d8c63c17a33efa46f716a1510b8498b01c25744a)
 
-[![Alternate Text]({image-url})]({https://player.vimeo.com/video/514490979} "Link Title")
-
-On the left is a population of 1 million simulated over about 5 years with a masking rate of 80% at random in the population. The right is the same simulation but with a masking rate of only 60%
+On the left is a population of 1 million simulated over about 5 years with a masking rate of 80% at random in the population. The right is the same simulation but with a masking rate of only 60%. ([Full video](https://vimeo.com/514490979))
 
 Cellular Defense Automata is a simulation similar to other discrete models of computation like [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) [[R.I.P.](https://www.nytimes.com/2020/04/15/technology/john-horton-conway-dead-coronavirus.html)].
 
