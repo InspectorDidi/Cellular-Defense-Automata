@@ -18,7 +18,7 @@ See also [Dawkins Viruses of the Mind](https://en.wikipedia.org/wiki/Viruses_of_
 ## Cellular Defense Automata
 Cellular Defense Automata are represented on each cell of the board and remain static. These cells can represent individual cells in an organism, people in a social network, or a network of cities, countries, or even [planets](https://en.wikipedia.org/wiki/Panspermia). They can send and receive contagions but also have some defenses.
 
-Cruise ships, airplanes, trains, buses, gyms, or nearly any enclosed environment can be modelled in a similar way as a social network can be. You might not think you are connected to the people you are around, but we breathe the same air, and because of reasons like that we are connected not only to all living beings.
+Cruise ships, airplanes, trains, buses, gyms, [places of worship](https://edmonton.ctvnews.ca/alta-pastor-charged-with-violating-public-health-act-still-in-custody-for-refusing-conditions-rcmp-1.5313426), or nearly any enclosed environment can be modelled in a similar way as a social network can be. You might not think you are connected to the people you are around, but we breathe the same air, and because of reasons like that we are connected not only to all living beings.
 
 ## Players/Automaton
 ### Default States
