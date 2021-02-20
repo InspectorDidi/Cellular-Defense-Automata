@@ -8,7 +8,7 @@ On the left is a population of 1 million simulated over about 5 years with a def
 
 ![Cellular Defense Automata](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/a3500cff-a00c-4bed-9b67-3297d6579f4b.gif?ClientID=vimeo-core-prod&Date=1613780686&Signature=7cbeef64d18176a5bac00af39cb12dfd5697b118)
 
-An identical simulation comparing a Coronavirus variant to Ebola. ([Full video](https://vimeo.com/514514010))
+An identical simulation comparing a Coronavirus variant to Ebola. The structure in the middle is made out of two layers of dead cells, this structure does appear to be helpful in containing Ebola but not Corona. Two layer walls are needed because Corona can move through normal walls. ([Full video](https://vimeo.com/514514010))
 
 
 Cellular Defense Automata is a simulation similar to other discrete models of computation like [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) [[R.I.P.](https://www.nytimes.com/2020/04/15/technology/john-horton-conway-dead-coronavirus.html)].
