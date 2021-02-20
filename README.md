@@ -10,7 +10,7 @@ On the left is a population of 1 million simulated over about 5 years with a def
 
 An identical simulation comparing a Coronavirus variant to Ebola. The structure in the middle is made out of two layers of dead cells, this structure does appear to be helpful in containing Ebola but not Corona. Two layer walls are needed because [Corona can move through walls.](https://www.cbc.ca/news/canada/calgary/alberta-senior-citizens-wall-defence-1.5832611) ([Full video](https://vimeo.com/514514010))
 
-
+## Cellular Defense
 Cellular Defense Automata is a simulation similar to other discrete models of computation like [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) [[R.I.P.](https://www.nytimes.com/2020/04/15/technology/john-horton-conway-dead-coronavirus.html)].
 
 For modeling contagion dissemination in networks, CDA uses viral memes. As a result, it is a good model for how critical defenses can actually be through source control [(such as with face masks and virus  spread)](https://www.ucsf.edu/news/2020/06/417906/still-confused-about-masks-heres-science-behind-how-face-masks-prevent) but also in other network and complex scenarios such as communication networks.
