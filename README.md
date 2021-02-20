@@ -4,6 +4,13 @@
 
 On the left is a population of 1 million simulated over about 5 years with a defense rate of 80% at random in the population. The right is the same simulation but with a defense rate of only 60%. ([Full video](https://vimeo.com/514490979)) The contagion itself is modeled after SARS-COV-2. Low defense rates lead to potential endemics.
 
+### Corona vs Ebola
+
+![Cellular Defense Automata](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/a3500cff-a00c-4bed-9b67-3297d6579f4b.gif?ClientID=vimeo-core-prod&Date=1613780686&Signature=7cbeef64d18176a5bac00af39cb12dfd5697b118)
+
+An identical simulation comparing a Coronavirus variant to Ebola. ([Full video](https://vimeo.com/514514010))
+
+
 Cellular Defense Automata is a simulation similar to other discrete models of computation like [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) [[R.I.P.](https://www.nytimes.com/2020/04/15/technology/john-horton-conway-dead-coronavirus.html)].
 
 For modeling contagion dissemination in networks, CDA uses viral memes. As a result, it is a good model for how critical defenses can actually be through source control [(such as with face masks and virus  spread)](https://www.ucsf.edu/news/2020/06/417906/still-confused-about-masks-heres-science-behind-how-face-masks-prevent) but also in other network and complex scenarios such as communication networks.
