@@ -76,7 +76,7 @@ A mask may be the only defense available. But this is only an example to build o
 
 Exact defense stats laid out here vary from situation to situation depending on environment and individuals. This is a common stat thrown out around the internet and is widely believed. These exact numbers are merely default values that can be updated at will or once better information is available.
 
-![Drag Racing](https://www.danvillesanramon.com/blogs/photos/23/3922.jpg)
+![Mask Defense Stats](https://github.com/TheMemeticist/Cellular-Defense-Automata/blob/main/Images/Examples/MaskDefenseStats.png?raw=true)
 >Dr. Shelley Payne, director of the [La Montagne Center for Infectious Disease](https://icmb.utexas.edu/research/organized-research-units/lamontagne-center) at the University of Texas at Austin, explained that while the relative order of risk shown in the graphic is correct, “the actual numbers will depend on a number of factors, including amount of virus shed by the case or carrier, distance between the two individuals, type of mask material, fit of the mask.” - ([source](https://factcheck.afp.com/misleading-mask-graphic-claims-show-exact-chance-covid-19-spread))
 
 # Viral networks: connecting digital humanities and medical history
