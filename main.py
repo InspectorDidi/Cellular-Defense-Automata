@@ -1,3 +1,1 @@
-from CellularDefenseAutomata import *
-def main():CDA=CellularDefenseAutomata();CDA.Play();CDA.Render()
-if __name__=='__main__':main()
+exec("""\nfrom CellularDefenseAutomata import *\ndef main():CDA=CellularDefenseAutomata();CDA.Play();CDA.Render()\nif __name__=='__main__':main()\n""")
