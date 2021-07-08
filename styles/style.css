@@ -1,0 +1,47 @@
+
+#cell {
+  margin-top:-4px;
+}
+#petriDish {
+  border: 4px solid black;
+  border-radius: 5%;
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#settings {
+  font-weight: 900;
+  border: 4px solid black;
+  border-radius: 1%;
+  margin-top: 5%;
+  width: 25%;
+  height: 75%;
+  position: absolute;
+  font-family: Helvetica;
+  text-align: left;
+  float: left;
+}
+#slider {
+  font-weight: 400;
+  border-bottom: 4px solid black;
+}
+#days {
+  font-family: Helvetica;
+  text-align: center;
+  font-weight: 900;
+}
+#deaths {
+  margin-top:4%;
+  font-family: Helvetica;
+  text-align: center;
+  font-size:250%;
+  font-weight: 900;
+}
+#text {
+  font-family: Helvetica;
+  text-align: center;
+  font-weight: 900;
+}

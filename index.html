@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <LINK href="styles/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div id="deaths">Day 1</div>
+    <div id="petriDish"></div>
+    <div id="settings" onchange="updateSliderValues();">
+      <div id="slider">
+        <p style="text-align: center;">Population Size</p>
+        <input style="width:80%;" id="size" type="range"></input><p style="font-size:100%; margin-top:-2%; float:right"id="sizetext"></p>
+      </div>
+      <div id="slider">
+        <p style="text-align: center;">Manhattan Distance</p>
+        <input style="width:80%;" id="md" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="mdtext">2</p></input>
+      </div>
+      <div id="slider">
+        <p style="text-align: center;">Initial Infections</p>
+        <input style="width:80%;" id="ir" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="irtext">3%</p></input>
+      </div>
+      <div id="slider">
+        <p style="text-align: center;">Defense Rate</p>
+        <input style="width:80%;" id="dr" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="drtext">12%</p></input>
+      </div>
+      <div id='text'>
+        <p>Contagion</p>
+        <img src="asssets/CDAThemes/Emoticon/Meme.png">
+        <p style="font-weight: 100;">SARS-CoV-2</p>
+      </div>
+      <div id="slider">
+        <p style="text-align: center;">Kill Rate</p>
+        <input style="width:80%;" id="ripr" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="krtext">3%</p></input>
+      </div>
+      <button style="margin-left: 40%;" type="button" onclick="MGMT.update(); day = 0;">Run</button>
+    </div>
+    <div id="days">Day 1</div>
+    <script src="./js/game.js"></script>
+  </body>
+</html>
