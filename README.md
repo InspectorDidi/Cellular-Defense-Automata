@@ -4,11 +4,12 @@ Simulate contagions moving through a population in your browser.
 
 [Click here to play the game](https://thememeticist.github.io/Cellular-Defense-Automata/)
 
+This is a fork and javascript implementation of [Cellular Defense Automata](https://github.com/TheMemeticist/Cellular-Defense-Automata)
+
 
 ## Cellular Defense Automata
 ![Cellular Defense Automata](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/f9f4c335-4399-4afb-bc5e-c7b181cfe1c4.gif?ClientID=vimeo-core-prod&Date=1613775833&Signature=d8c63c17a33efa46f716a1510b8498b01c25744a)
 
-This is a fork and javascript implementation of [Cellular Defense Automata](https://github.com/TheMemeticist/Cellular-Defense-Automata)
 
 On the left is a population of 1 million simulated over about 5 years with a defense rate of 80% at random in the population. The right is the same simulation but with a defense rate of only 60%. The contagion itself is modeled after SARS-COV-2. Low defense rates lead to potential endemics. ([Full video](https://vimeo.com/514490979))
 
