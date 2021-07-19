@@ -211,7 +211,7 @@ class SettingsManager {
       'Emoji':  'asssets/CDAThemes/Emoticon/',
       'Forest': 'asssets/CDAThemes/Forest/',
     }
-    this.game.gamestyle = 'Emoji';
+    this.game.gamestyle = 'Forest';
     let path = this.game.styles[this.game.gamestyle];
     this.game.manhattanDistance = Math.round((document.getElementById("md").value / 100)* 4);
     this.game.initialInfectionRate = document.getElementById("ir").value / 100;
