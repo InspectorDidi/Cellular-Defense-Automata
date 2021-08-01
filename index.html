@@ -2,39 +2,46 @@
 <html>
   <head>
     <LINK href="styles/style.css" rel="stylesheet" type="text/css">
+    <script src="./js/plotly.min.js"></script>
   </head>
   <body>
-    <div id="deaths">Day 1</div>
-    <div id="petriDish"></div>
-    <div id="settings" onchange="updateSliderValues();">
-      <div id="slider">
-        <p style="text-align: center;">Population Size</p>
-        <input style="width:80%;" id="size" type="range"></input><p style="font-size:100%; margin-top:-2%; float:right"id="sizetext"></p>
+    <div id="panel" onchange="env.update();">
+      <div id="neighborhoodSettings">
+        <p id="text">Neighbourhood</p>
+        <img src="asssets/CDAThemes/Emoticon/houses.svg">
       </div>
-      <div id="slider">
-        <p style="text-align: center;">Manhattan Distance</p>
-        <input style="width:80%;" id="md" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="mdtext">2</p></input>
+      <p id="text">Defenses</p>
+      <div id='subSettings'>
+        <div id='maskSettings' style='border-right: 1px solid'>
+          <img src="asssets/CDAThemes/Emoticon/MaskedMan.svg">
+        </div>
       </div>
-      <div id="slider">
-        <p style="text-align: center;">Initial Infections</p>
-        <input style="width:80%;" id="ir" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="irtext">3%</p></input>
+      <div id='subSettings'>
+        <div id='inoculationSettings'>
+          <img src="asssets/CDAThemes/Emoticon/syringe.svg">
+        </div>
       </div>
-      <div id="slider">
-        <p style="text-align: center;">Defense Rate</p>
-        <input style="width:80%;" id="dr" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="drtext">12%</p></input>
-      </div>
-      <div id='text'>
-        <p>Contagion</p>
-        <img src="asssets/CDAThemes/Emoticon/Meme.png">
-        <p style="font-weight: 100;">SARS-CoV-2</p>
-      </div>
-      <div id="slider">
-        <p style="text-align: center;">Kill Rate</p>
-        <input style="width:80%;" id="ripr" type="range"><p style="font-size:100%; margin-top:-2%; float:right"id="krtext">10%</p></input>
-      </div>
-      <button style="margin-left: 40%;" type="button" onclick="MGMT.update(); day = 0;">Run</button>
     </div>
-    <div id="days">Day 1</div>
+    <div class="neighborhood">
+      <div class='topStats' id="zombiesn">Zombies</div>
+      <div class='topStats' id="deaths">0</div>
+      <div id="days">Days</div>
+      <div id="petriDish"></div>
+    </div>
+    <div id="panel" style='float:right;' onchange="env.update();">
+      <div id="contagionSettings">
+        <p id="text">Contagion</p>
+        <img src="asssets/CDAThemes/Emoticon/Meme.svg">
+      </div>
+      <div id='rNaught'></div>
+
+      <div id="subSettings"></div>
+    </div>
+    <div id="graph">
+      <div id="stat">
+        <p id="text">Loading Statistics...</p>
+      </div>
+    </div>
     <script src="./js/game.js"></script>
   </body>
 </html>
