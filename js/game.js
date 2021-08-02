@@ -415,11 +415,11 @@ class  Enviroment {
       // defualt to Wuhan Strain
       // id, min, max, defualt/current, displayPercent,
       ['Kill Rate', 0, 100, 3, true],
-      ['Attack Rate', 0, 100, 41, true],
-      ['Range', 1, 6, 20, false],
       ['Incubation', 0, 100, 2, false],
       ['Contagious', 1, 100, 2, false],
-      ['Decay Rate', 0, 100, 3, true]
+      ['Decay Rate', 0, 100, 3, true],
+      ['Attack Rate', 0, 100, 41, true],
+      ['Range', 1, 6, 20, false]
     ];
     this.settings = [
       new SimulationController(neighborhoodSettings, 'neighborhoodSettings'),
