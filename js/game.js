@@ -1,4 +1,32 @@
+class Meme {
+  constructor(settings) {
+    this.genes = settings;
+    this.age = 0;
+    this.infectious = false;
+    this.dead = false;
+  }
+  cycle() {
+    // step forward life cycle
+    let incubationPeriod = this.genes["Incubation"];
 
+    if (this.age >= incubationPeriod) {
+      this.infectious = true;
+      let infectiousPeriod = this.genes["Infectious"];
+      if (this.age > (incubationPeriod + infectiousPeriod)) {
+        this.infectious = false;
+        let recoveryOdds = this.genes["Decay Rate"] / 100;
+        if (new Dice().roll(recoveryOdds)) {
+          this.dead = true;
+        }
+      }
+    }
+    this.age += 1;
+  }
+  copy() {
+    let child = new Meme(JSON.parse(JSON.stringify(this.genes)));
+    return child;
+  }
+}
 class Cell {
   constructor() {
     this.state = 0;
@@ -11,47 +39,52 @@ class Cell {
   }
   live() {
     // Handles cells interactions with neighbors  (i.e. viral attacks!)
-    let dice = new Dice();
     let body = [];
     this.body.forEach((virus) => {
-      if (virus.contagious) {
+      if (virus.infectious) {
         this.state = 1
         let attackRate = this.getAttackRate(virus);
         this.neighbors.forEach((neighborCell) => {
           // attack the neighbors!
           if (neighborCell.state === 0) {
             if (!neighborCell.isSick()) { // Please lord have mercy!
-              if (dice.roll(attackRate * neighborCell.protection)) {
+              if (new Dice().roll(attackRate * neighborCell.protection)) {
                 neighborCell.body.push(virus.copy());
               }
             }
           }
         });
-      } else {
-        if (virus.age > (virus.genes['Incubation'] + virus.genes['Contagious'])) {
-          this.state = 2;
-        }
       }
       virus.cycle();
       if (!virus.dead) {
         body.push(virus);
-      } else { // infection is cleared
-        let killRate = virus.genes['Kill Rate'] / 100;
-        if (this.defenses.length > 0) {
-          this.defenses.forEach((shield) => {
-            killRate = killRate * shield.mortalityReduction;
-          });
-        }
-        if (dice.roll(killRate)) {
-          this.state = 3;
-          this.body = [];
-          this.alive = false;
-        } else {
-          this.state = 0;
+        if (this.state === 1) {
+          if (virus.age > (virus.genes['Incubation'] + virus.genes['Infectious'])) {
+            this.mortalityEval(virus);
+          }
         }
       }
     });
     this.body = body;
+    if (this.alive && (this.body.length === 0)) {
+      this.state = 0;
+    }
+  }
+  mortalityEval(virus) {
+    let dice = new Dice();
+    let killRate = virus.genes['Kill Rate'] / 100;
+    if (this.defenses.length > 0) {
+      this.defenses.forEach((shield) => {
+        killRate = killRate * shield.mortalityReduction;
+      });
+    }
+    if (dice.roll(killRate)) {
+      this.state = 3;
+      this.body = [];
+      this.alive = false;
+    } else {
+      this.state = 2;
+    }
   }
   getAttackRate(virus) {
     // Calculate the attack rate for this cell with X defense(s) and Y Virus
@@ -68,11 +101,11 @@ class Cell {
     });
     this.protection = protection;
   }
-  isContagious() {
+  isInfectious() {
     this.body.forEach((virus) => {
-      if (virus.age >= virus.genes["Incubation"] && virus.age <= virus.genes["Contagious"]) {
-        if (virus.contagious) {
-          return virus.contagious;
+      if (virus.age >= virus.genes["Incubation"] && virus.age <= virus.genes["Infectious"]) {
+        if (virus.infectious) {
+          return virus.infectious;
         }
       }
     });
@@ -95,36 +128,6 @@ class Defense {
     this.mortalityReduction = (1.0 - settings['Mortality Reduction'] / 100);
   }
 }
-class Meme {
-  constructor(settings) {
-    this.genes = settings;
-    this.age = 0;
-    this.contagious = false;
-    this.dead = false;
-  }
-  cycle() {
-    // step forward life cycle
-    let incubationPeriod = this.genes["Incubation"];
-
-    if (this.age >= incubationPeriod) {
-      this.contagious = true;
-      let contagiousPeriod = this.genes["Contagious"];
-      if (this.age > (incubationPeriod + contagiousPeriod)) {
-        this.contagious = false;
-        let recoveryOdds = this.genes["Decay Rate"] / 100;
-        let dice = new Dice();
-        if (dice.roll(recoveryOdds)) {
-          this.dead = true;
-        }
-      }
-    }
-    this.age += 1;
-  }
-  copy() {
-    let child = new Meme(JSON.parse(JSON.stringify(this.genes)));
-    return child;
-  }
-}
 class Dice {
   constructor() {
     this.min = 0.01;
@@ -140,6 +143,8 @@ class Dice {
 }
 class Game {
   constructor(gamestyle) {
+    this.isRangeFinder = false;
+    this.dice = new Dice();
     this.styles = {
       'Emoji':  'asssets/CDAThemes/Emoticon/',
       'Forest': 'asssets/CDAThemes/Forest/',
@@ -158,14 +163,26 @@ class Game {
       ];
     }
   buildBoard(settings) {
+    if (this.isRangeFinder) {
+      let path = this.styles[this.gamestyle];
+      this.sprites = [
+        path + "Neutral/0.png",
+        path + "biohazard.svg",
+        path + "Meme.svg",,
+        path + "Defense/0.png",
+        path + "Defense/1.png",
+        path + "Defense/2.png",
+        path + "RIP.png"
+        ];
+    }
     this.settings = settings;
-    this.longStats = {'contagious':[], 'zombie':[], 'dead':[]};
+    this.longStats = {'infectious':[], 'zombie':[], 'dead':[]};
     let size = this.settings[0]['Population Size'];
 
     let surgicalMask = new Defense(this.settings[1]);
     let vaccine = new Defense(this.settings[2]);
-    let genesisVirus = new Meme(this.settings[3]);
     let defenses = [surgicalMask, vaccine];
+    let genesisVirus = new Meme(this.settings[3]);
 
     let count = 0;
     let board = []
@@ -178,30 +195,21 @@ class Game {
       board.push(this.initInfection(new Cell(), genesisVirus, defenses, zero));
       count += 1;
     } while (count < Math.pow(size, 2));
-    // squish into 2D arrays
 
+
+    // squish into 2D arrays
     let board2D = [];
     while(board.length) board2D.push(board.splice(0, size));
 
-    // Get nearest neighbors
-    let rowCount = 0;
-    board2D.forEach((row) => {
-      let colCount = 0;
-      row.forEach((cell) => {
-        this.getNeighbors(cell, [rowCount, colCount], board2D);
-        colCount += 1;
-      });
-      rowCount += 1;
-    })
     this.board = board;
     this.size = size;
     this.population = Math.pow(size,2)
     this.board2D = board2D;
+    this.getNeighbors(this.settings[3]['Range']);
   }
   initInfection(cell, virus, shields, patientZero) {
     // random select individuals for initialization of contagion
-    let dice = new Dice();
-    if (dice.roll(this.settings[0]['Seed Infections'] / 100)) {
+    if (this.dice.roll(this.settings[0]['Seed Infections'] / 100)) {
       cell.body.push(virus.copy());
     }
 
@@ -210,37 +218,46 @@ class Game {
     }
 
     let oddsMask = this.settings[1]['Rate'] /  100; // masking rate
-    if (dice.roll(oddsMask)) {
+    if (this.dice.roll(oddsMask)) {
       cell.defense = true;
       cell.defenses.push(shields[0]);
     }
     let oddsVax = this.settings[2]['Rate'] /  100; // masking rate
-    if (dice.roll(oddsVax)) {
+    if (this.dice.roll(oddsVax)) {
       cell.vaxxed = true;
       cell.defenses.push(shields[1]);
     }
     cell.getProtection();
     return cell;
   }
-  getNeighbors(cell, index, board2D) {
-    let x = index[0];
-    let y = index[1];
-    let maxD = this.settings[3]['Range'];
-    // get Manhattan distance of each from input cell
+  getNeighbors(range) {
+    // Get nearest neighbors!
+    function getNearest(cell, index, board2D, manhattanDistance) {
+      let x = index[0];
+      let y = index[1];
+      // get Manhattan distance of each from input cell
+      let rowCount = 0;
+      board2D.forEach((row) => {
+        let colCount = 0;
+        row.forEach((neighborCell) => {
+          let distance = Math.abs(colCount - x) + Math.abs(rowCount - y);
+          if (distance != 0 && distance <= manhattanDistance) {
+            cell.neighbors.push(neighborCell);
+          }
+          colCount += 1;
+        });
+        rowCount += 1;
+      })
+    }
     let rowCount = 0;
-    board2D.forEach((row) => {
+    this.board2D.forEach((row) => {
       let colCount = 0;
-      row.forEach((neighborCell) => {
-        let distance = Math.abs(colCount - x) + Math.abs(rowCount - y);
-
-        if (distance != 0 && distance <= maxD) {
-          cell.neighbors.push(neighborCell);
-        }
+      row.forEach((cell) => {
+        getNearest(cell, [rowCount, colCount], this.board2D, range);
         colCount += 1;
       });
       rowCount += 1;
     })
-
   }
   render(canvasId) {
     // clear the current board state
@@ -286,33 +303,72 @@ class Game {
       });
     })
   }
+  mortalityEval(cell) {
+    // New ! and refractored
+    cell.body.forEach((virus) => {
+      let killRate = virus.genes['Kill Rate'] / 100;
+      if (cell.defenses.length > 0) {
+        cell.defenses.forEach((shield) => {
+          killRate = killRate * shield.mortalityReduction;
+        });
+      }
+      if (cell.dice.roll(killRate)) {
+        cell.state = 3;
+        cell.body = [];
+        cell.alive = false;
+      } else {
+        cell.state = 2;
+      }
+    });
+  }
+  birthEval(cell, birthRate) {
+
+    let aliveNeighbors = 0;
+    cell.neighbors.forEach((neighbor) => {
+      if (neighbor.alive) {
+        aliveNeighbors += 1;
+      }
+      });
+    if ((aliveNeighbors / cell.neighbors.length) > 0.5) {
+      if (this.dice.roll(birthRate)) {
+        cell.state = 0;
+        cell.body = [];
+        cell.alive = true;
+      }
+    }
+    return cell;
+  }
   turn() {
-    // flatten board first
+
     let board = this.board2D.flat();
     let dead = 0;
-    let contagious = 0;
+    let infectious = 0;
     let zombie = 0;
-
     board.forEach((cell) => {
       if (cell.alive) {
         cell.live();
         if (cell.isSick()) {
-          contagious += 1;
+          infectious += 1;
         }
         if (cell.state === 2) {
           zombie += 1;
         }
       } else {
-        cell.state = 3;
+        //cell.state = 3;
+        let birthRate = this.settings[0]['Birth Rate'] / 100;
+        this.birthEval(cell, birthRate);
         dead += 1;
-      }
+        }
     });
-    this.stats['dead'] = Math.round(dead / (this.size * this.size) * 100);
-    this.stats['contagious'] = Math.round(contagious / (this.size * this.size) * 100);
-    this.stats['zombie'] = Math.round(zombie / (this.size * this.size) * 100);
-    this.longStats['contagious'].push((contagious / this.population) * 100);
-    this.longStats['dead'].push((dead / this.population) * 100);
-    this.longStats['zombie'].push((zombie / this.population) * 100);
+
+    this.stats['dead'] = Math.round(dead / this.population * 100);
+    this.stats['infectious'] = Math.round(infectious / this.population * 100);
+    this.stats['zombie'] = Math.round(zombie / this.population * 100);
+
+    this.longStats['infectious'].push(infectious / this.population * 100);
+    this.longStats['dead'].push(dead / this.population * 100);
+    this.longStats['zombie'].push(zombie / this.population * 100);
+
     return this.stats;
   }
 }
@@ -377,14 +433,14 @@ class Slider {
       } else {
         text.textContent = this.id + ' ' + val.toString();
       }
-      if (this.id === 'Contagious' || this.id === 'Incubation') {
+      if (this.id === 'Infectious' || this.id === 'Incubation') {
         text.textContent = this.id + ' Period: ' + val.toString() + ' days';
       }
     }
     return val;
   }
 }
-class  Enviroment {
+class Enviroment {
   constructor(game) {
     // init defualt game enviroment
     this.game = game;
@@ -393,6 +449,7 @@ class  Enviroment {
       // id, min, max, defualt, displayPercent,
       ['Population Size', 5, 35, 15, false],
       ['Seed Infections', 1, 100, 3, true],
+      ['Birth Rate', 1, 100, 3, true],
     ];
     let maskSettings = [
       // These are the defualt settings for surgical masks.
@@ -417,7 +474,7 @@ class  Enviroment {
       ['Kill Rate', 0, 100, 3, true],
       ['Decay Rate', 0, 100, 3, true],
       ['Incubation', 0, 100, 2, false],
-      ['Contagious', 1, 100, 2, false],
+      ['Infectious', 1, 100, 2, false],
       ['Attack Rate', 0, 100, 41, true],
       ['Range', 1, 6, 20, false]
     ];
@@ -433,6 +490,7 @@ class  Enviroment {
     document.getElementById('contagionSettings').appendChild(div);
 
     this.rangeFinder = new Game('Emoji');
+    this.rangeFinder.isRangeFinder = true;
 
   }
   update() {
@@ -456,7 +514,7 @@ class  Enviroment {
       neighborCell.state = 1;
     });
     let numNeighbors = centerCell.neighbors.length;
-    let rNaught = (numNeighbors * (set[3]['Attack Rate']/100)) * set[3]['Contagious'];
+    let rNaught = (numNeighbors * (set[3]['Attack Rate']/100)) * set[3]['Infectious'];
     if (rNaught > centerCell.neighbors.length) {
       rNaught = centerCell.neighbors.length;
     }
@@ -475,10 +533,11 @@ class  Enviroment {
     this.isRunning = true;
     let lastBoard = this.game.board;
     let delay = 100;
-    let mu = 21;
+    let mu = 7;
     let goldenRation = 1.61803;
     //let graph = new Statistics();
     this.interval = setInterval(() => {
+       let start = Date.now();
        this.game.render("petriDish");
        let stats = this.game.turn();
        day += 1;
@@ -490,14 +549,14 @@ class  Enviroment {
          let foo = new Statistics(this.game.longStats);
          mu = mu + Math.round(mu * goldenRation);
        }
-       //document.getElementById("contagen").innerHTML = "🥵 = " + stats['contagious'].toString() + '%';
-       document.getElementById("zombiesn").innerHTML = "🧟 = " + stats['zombie'].toString() + '%';
        document.getElementById("deaths").innerHTML = "💀 = " + stats['dead'].toString() + '%';
        document.getElementById("days").innerHTML = time;
-       if (stats['contagious'] < 1 ) {
+       if (stats['infectious'] < 1 ) {
          this.stopGame()
          let foo = new Statistics(this.game.longStats);
        }
+       let delta = Date.now() - start; // currently around 140-250 seconds for population of 1225
+       console.log(delta);
      }, delay);
   }
   stopGame() {
@@ -518,7 +577,7 @@ class Statistics {
     document.getElementById("graph").appendChild(lineChart);
 
     let trace3 = this.getTrace(data['dead'], '☠️ Dead', '#808080');
-    let trace1 = this.getTrace(data['contagious'], '🥵 Contagious', '#ff0000');
+    let trace1 = this.getTrace(data['infectious'], '🥵 Infectious', '#ff0000');
     let trace2 = this.getTrace(data['zombie'], '🧟 Zombie', '#24ad00');
 
     let labels = {
@@ -569,6 +628,7 @@ class Statistics {
   }
 
 }
+
 let env = new Enviroment(new Game('Emoji'));
 
 env.update();
