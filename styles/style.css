@@ -11,6 +11,10 @@
   height: 100%;
   width: 100%;
 }
+#pixel {
+  height: 100%;
+  width: 100%;
+}
 #vax {
   position: absolute;
   margin-top:-35%;
@@ -60,14 +64,17 @@
   width:40vw;
   height:40vw;
   margin: 4%;
+  margin-left:7.5%;
 }
 #graph {
   border: solid 2px;
   border-radius: 40px;
   float:left;
-  width:70%;
+  width:50%;
   height:40vw;
   margin: 2%;
+  margin-top:-2%;
+  margin-left: 3%;
 }
 #settings {
   float: left;
@@ -100,7 +107,7 @@
 .topStats {
   box-sizing: border-box;
   float: left;
-  width:50%;
+  width:100%;
   margin-top:2%;
   font-family: Helvetica;
   text-align: center;
