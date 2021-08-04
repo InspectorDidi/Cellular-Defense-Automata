@@ -29,13 +29,14 @@ class Meme {
 }
 class Cell {
   constructor() {
+    this.alive = true; // A cell is born!
     this.state = 0;
-    this.neighbors = [];
-    this.alive = true;
-    this.body = [];
+    this.receptor = 'ABCD';
     this.defense = false;
     this.vaxxed = false;
     this.defenses = [];
+    this.neighbors = [];
+    this.body = [];
   }
   live() {
     // Handles cells interactions with neighbors  (i.e. viral attacks!)
@@ -60,9 +61,11 @@ class Cell {
         body.push(virus);
         if (this.state === 1) {
           if (virus.age > (virus.genes['Incubation'] + virus.genes['Infectious'])) {
-            this.mortalityEval(virus);
+            this.state = 2;
           }
         }
+      } else {
+        this.mortalityEval(virus);
       }
     });
     this.body = body;
@@ -83,7 +86,7 @@ class Cell {
       this.body = [];
       this.alive = false;
     } else {
-      this.state = 2;
+      this.state = 0;
     }
   }
   getAttackRate(virus) {
@@ -167,8 +170,8 @@ class Game {
       let path = this.styles[this.gamestyle];
       this.sprites = [
         path + "Neutral/0.png",
-        path + "biohazard.svg",
-        path + "Meme.svg",,
+        path + "Meme.svg",
+        path + "biohazard.svg",,
         path + "Defense/0.png",
         path + "Defense/1.png",
         path + "Defense/2.png",
@@ -193,6 +196,7 @@ class Game {
         zero = true;
       }
       board.push(this.initInfection(new Cell(), genesisVirus, defenses, zero));
+
       count += 1;
     } while (count < Math.pow(size, 2));
 
@@ -204,8 +208,13 @@ class Game {
     this.board = board;
     this.size = size;
     this.population = Math.pow(size,2)
+    this.pixelRender = false;
+    if (this.population > 1000) {
+      this.pixelRender = true;
+    }
     this.board2D = board2D;
     this.getNeighbors(this.settings[3]['Range']);
+
   }
   initInfection(cell, virus, shields, patientZero) {
     // random select individuals for initialization of contagion
@@ -268,6 +277,10 @@ class Game {
     canvas.querySelectorAll("[id=vax]").forEach((cell) => {
       cell.remove();
     });
+    let cssId = 'cell';
+    if (this.pixelRender) {
+      let cssId = '';
+    }
     // place each cell with updated values
     this.board2D.forEach((row) => {
       row.forEach((cell) => {
@@ -278,26 +291,44 @@ class Game {
         cellElement.setAttribute('id', 'cell');
         cellElement.setAttribute('style', h + w);
 
-        let img = document.createElement('img');
-        if (cell.defense) {
-          img.src = this.sprites[cell.state + 3];
+        if (this.pixelRender) {
+          let pixel = document.createElement('div');
+          pixel.setAttribute('id', 'pixel');
+          if (cell.alive) {
+            pixel.setAttribute('style', 'background-color:#ffe0bd;');
+            if (cell.defense) {
+              pixel.setAttribute('style', 'background-color:#8BE3D9;');
+            }
+            if (cell.state === 1) {
+              pixel.setAttribute('style', 'background-color:#F72427;');
+            }
+            if (cell.state === 2) {
+              pixel.setAttribute('style', 'background-color:#78C165;');
+            }
+          }
+          else {
+            pixel.setAttribute('style', 'background-color:black;');
+          }
+          cellElement.appendChild(pixel);
         } else {
-          img.src = this.sprites[cell.state];
+          let img = document.createElement('img');
+          if (cell.defense) {
+            img.src = this.sprites[cell.state + 3];
+          } else {
+            img.src = this.sprites[cell.state];
+          }
+          if (!cell.alive) {
+            img.src = this.sprites[6];
+          }
+          img.setAttribute('id', 'cellState');
+          if (cell.vaxxed) {
+            let vaccine = document.createElement('img');
+            vaccine.src = 'asssets/CDAThemes/Emoticon/syringe.svg'
+            vaccine.setAttribute('id', 'vax');
+            cellElement.appendChild(vaccine);
+          }
+          cellElement.appendChild(img);
         }
-        if (!cell.alive) {
-          img.src = this.sprites[6];
-        }
-        //img.setAttribute('id', 'cell');
-        img.setAttribute('id', 'cellState');
-
-
-        if (cell.vaxxed) {
-          let vaccine = document.createElement('img');
-          vaccine.src = 'asssets/CDAThemes/Emoticon/syringe.svg'
-          vaccine.setAttribute('id', 'vax');
-          cellElement.appendChild(vaccine);
-        }
-        cellElement.appendChild(img);
 
         document.getElementById(canvasId).appendChild(cellElement);
       });
@@ -356,7 +387,9 @@ class Game {
       } else {
         //cell.state = 3;
         let birthRate = this.settings[0]['Birth Rate'] / 100;
-        this.birthEval(cell, birthRate);
+        if (birthRate > 0) {
+          this.birthEval(cell, birthRate);
+        }
         dead += 1;
         }
     });
@@ -447,16 +480,16 @@ class Enviroment {
     this.isRunning = false;
     let neighborhoodSettings = [
       // id, min, max, defualt, displayPercent,
-      ['Population Size', 5, 35, 15, false],
-      ['Seed Infections', 1, 100, 3, true],
+      ['Population Size', 5, 100, 15, false],
       ['Birth Rate', 1, 100, 3, true],
+      ['Seed Infections', 1, 100, 3, true],
     ];
     let maskSettings = [
       // These are the defualt settings for surgical masks.
       // Face masks can reduce mortality, see:
       // https://consultqd.clevelandclinic.org/face-masks-reduce-risk-of-covid-19-infection-but-should-be-used-with-other-interventions/
       ['Rate', 0, 100, 50, true],
-      ['Protection', 0, 100, 80, true],
+      ['Protection', 0, 100, 20, true],
       ['Dampening', 0, 100, 81, true],
       ['Mortality Reduction', 0, 100, 0, true],
     ];
@@ -509,10 +542,17 @@ class Enviroment {
     this.rangeFinder.buildBoard(set);
     let index = Math.round(set[0]['Population Size']/2);
     let centerCell = this.rangeFinder.board2D[index-1][index-1];
-    centerCell.state = 2;
+    this.rangeFinder.board2D.forEach((row) => {
+      row.forEach((cell) => {
+        cell.state = 2;
+      });
+    });
+    centerCell.state = 0;
     centerCell.neighbors.forEach((neighborCell) => {
       neighborCell.state = 1;
     });
+
+
     let numNeighbors = centerCell.neighbors.length;
     let rNaught = (numNeighbors * (set[3]['Attack Rate']/100)) * set[3]['Infectious'];
     if (rNaught > centerCell.neighbors.length) {
@@ -520,7 +560,6 @@ class Enviroment {
     }
     //'R0 = ' + rNaught.toString()
     rNaught = 'R-Naught = ' + rNaught.toString();
-    console.log(rNaught);
     let rNaughtDiv = document.createElement('div');
     rNaughtDiv.setAttribute('id', 'rNaught');
     document.getElementById('rNaught').innerHTML = rNaught;
@@ -532,8 +571,8 @@ class Enviroment {
   playGame(day) {
     this.isRunning = true;
     let lastBoard = this.game.board;
-    let delay = 100;
-    let mu = 7;
+    let delay = 10;
+    let mu = 21;
     let goldenRation = 1.61803;
     //let graph = new Statistics();
     this.interval = setInterval(() => {
@@ -547,7 +586,8 @@ class Enviroment {
        }
        if (day % mu == 0) {
          let foo = new Statistics(this.game.longStats);
-         mu = mu + Math.round(mu * goldenRation);
+         //mu = mu + Math.round(mu * goldenRation);
+         //mu = mu + 4;
        }
        document.getElementById("deaths").innerHTML = "💀 = " + stats['dead'].toString() + '%';
        document.getElementById("days").innerHTML = time;
@@ -556,7 +596,7 @@ class Enviroment {
          let foo = new Statistics(this.game.longStats);
        }
        let delta = Date.now() - start; // currently around 140-250 seconds for population of 1225
-       console.log(delta);
+       //console.log(delta);
      }, delay);
   }
   stopGame() {
