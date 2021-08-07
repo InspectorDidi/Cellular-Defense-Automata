@@ -9,29 +9,72 @@ class Meme {
     // step forward life cycle
     let incubationPeriod = this.genes["Incubation"];
 
-    if (this.age >= incubationPeriod) {
+    if (this.age > incubationPeriod) {
       this.infectious = true;
       let infectiousPeriod = this.genes["Infectious"];
       if (this.age > (incubationPeriod + infectiousPeriod)) {
         this.infectious = false;
-        let recoveryOdds = this.genes["Decay Rate"] / 100;
-        if (new Dice().roll(recoveryOdds)) {
+        let decayRate = this.genes["Decay Rate"] / 100;
+        if (new Dice().roll(decayRate)) {
           this.dead = true;
         }
       }
     }
     this.age += 1;
   }
+  mutate() {
+    // step forward life cyclec
+
+    let mutated = false;
+    let mutateRate = 0.02;
+    if (new Dice().roll(mutateRate)) {
+      this.genes["Kill Rate"] = Math.round((Math.random() * 35) + 3);
+      mutated = true;
+    }
+    if (new Dice().roll(mutateRate)) {
+      this.genes["Decay Rate"] = Math.round(Math.random() * 15);
+      mutated = true;
+    }
+    if (new Dice().roll(mutateRate)) {
+      this.genes["Incubation"] = Math.round(Math.random() * 28);
+      mutated = true;
+    }
+    if (new Dice().roll(mutateRate)) {
+      this.genes["Infectious"] = Math.round(Math.random() * 28);
+      mutated = true;
+    }
+    if (new Dice().roll(mutateRate)) {
+      this.genes["Attack Rate"] = Math.round(Math.random() * 100);
+      mutated = true;
+    }
+
+    // if (mutated) {
+    //   console.log(this.genes["Kill Rate"]);
+    //   console.log(this.genes["Decay Rate"]);
+    //   console.log(this.genes["Incubation"]);
+    //   console.log(this.genes["Infectious"]);
+    //   console.log(this.genes["Attack Rate"]);
+    //   console.log('---------------------------');
+    // }
+  }
   copy() {
     let child = new Meme(JSON.parse(JSON.stringify(this.genes)));
+    //child.mutate();
     return child;
   }
 }
 class Cell {
   constructor() {
-    this.alive = true; // A cell is born!
-    this.state = 0;
-    this.receptor = 'ABCD';
+    this.age = 0;
+
+    // SEIR states
+    this.alive = true;
+    this.susceptible = true;
+    this.exposed = false;
+    this.infectious = false;
+    this.recovery = false;
+
+    this.DNA = 'ABCD';
     this.defense = false;
     this.vaxxed = false;
     this.defenses = [];
@@ -43,50 +86,35 @@ class Cell {
     let body = [];
     this.body.forEach((virus) => {
       if (virus.infectious) {
-        this.state = 1
         let attackRate = this.getAttackRate(virus);
         this.neighbors.forEach((neighborCell) => {
           // attack the neighbors!
-          if (neighborCell.state === 0) {
-            if (!neighborCell.isSick()) { // Please lord have mercy!
+          if (neighborCell.susceptible) {
               if (new Dice().roll(attackRate * neighborCell.protection)) {
                 neighborCell.body.push(virus.copy());
+                neighborCell.exposed = true;
+                neighborCell.susceptible = false;
               }
-            }
           }
         });
-      }
-      virus.cycle();
-      if (!virus.dead) {
-        body.push(virus);
-        if (this.state === 1) {
-          if (virus.age > (virus.genes['Incubation'] + virus.genes['Infectious'])) {
-            this.state = 2;
+      } else {
+        if (virus.age > virus.genes['Incubation']) {
+          this.infectious = true;
+          if (virus.age > virus.genes['Infectious']) {
+            this.infectious = false;
+            this.recovery = true;
           }
         }
-      } else {
-        this.mortalityEval(virus);
       }
+      virus.cycle();
+      body.push(virus);
     });
     this.body = body;
     if (this.alive && (this.body.length === 0)) {
-      this.state = 0;
-    }
-  }
-  mortalityEval(virus) {
-    let dice = new Dice();
-    let killRate = virus.genes['Kill Rate'] / 100;
-    if (this.defenses.length > 0) {
-      this.defenses.forEach((shield) => {
-        killRate = killRate * shield.mortalityReduction;
-      });
-    }
-    if (dice.roll(killRate)) {
-      this.state = 3;
-      this.body = [];
-      this.alive = false;
-    } else {
-      this.state = 0;
+      this.susceptible = true;
+      this.exposed = false;
+      this.infectious = false;
+      this.recovery = false;
     }
   }
   getAttackRate(virus) {
@@ -106,12 +134,8 @@ class Cell {
   }
   isInfectious() {
     this.body.forEach((virus) => {
-      if (virus.age >= virus.genes["Incubation"] && virus.age <= virus.genes["Infectious"]) {
-        if (virus.infectious) {
-          return virus.infectious;
-        }
-      }
-    });
+      return virus.infectious;
+      });
     return false;
   }
   isSick() {
@@ -133,7 +157,7 @@ class Defense {
 }
 class Dice {
   constructor() {
-    this.min = 0.01;
+    this.min = 0.0001;
     this.max = 1.0;
   }
   roll (odds) {
@@ -149,31 +173,30 @@ class Game {
     this.isRangeFinder = false;
     this.dice = new Dice();
     this.styles = {
-      'Emoji':  'asssets/CDAThemes/Emoticon/',
+      'Emoji':  'asssets/CellSprites/',
       'Forest': 'asssets/CDAThemes/Forest/',
     }
     this.stats = {};
     this.gamestyle = gamestyle;
     let path = this.styles[this.gamestyle];
     this.sprites = [
-      path + "Neutral/0.png",
-      path + "Neutral/1.png",
-      path + "Neutral/2.png",
-      path + "Defense/0.png",
-      path + "Defense/1.png",
-      path + "Defense/2.png",
-      path + "RIP.png"
+      path + "baby.svg",
+      path + "person.svg",
+      path + "personExposed.svg",
+      path + "personInfectious.svg",
+      path + "zombie.svg",
+      path + "headstone.svg",
       ];
     }
   buildBoard(settings) {
     if (this.isRangeFinder) {
       let path = this.styles[this.gamestyle];
       this.sprites = [
-        path + "Neutral/0.png",
-        path + "Meme.svg",
-        path + "biohazard.svg",,
-        path + "Defense/0.png",
-        path + "Defense/1.png",
+        "asssets/CellSprites/personExposed.svg",
+        "asssets/CellSprites/personInfectious.svg",
+        "asssets/CellSprites/personInfectious.svg",
+        "asssets/virus.svg",
+        "asssets/CellSprites/personInfectious.svg",
         path + "Defense/2.png",
         path + "RIP.png"
         ];
@@ -220,6 +243,8 @@ class Game {
     // random select individuals for initialization of contagion
     if (this.dice.roll(this.settings[0]['Seed Infections'] / 100)) {
       cell.body.push(virus.copy());
+      cell.exposed = true;
+      cell.susceptible = false;
     }
 
     if (patientZero) {
@@ -269,6 +294,78 @@ class Game {
     })
   }
   render(canvasId) {
+    function normalCell(cell, size) {
+      let cellSize = ((1 / size) * 100).toString();
+      let h = 'height: ' + cellSize + '%; '
+      let w = 'width: ' + cellSize + '%; '
+      let cellElement = document.createElement('div');
+      cellElement.setAttribute('id', 'cell');
+      cellElement.setAttribute('style', h + w);
+      return cellElement;
+    }
+    function pixelCell(cell, cellElement) {
+      // renders cell as pixel
+      let pixel = document.createElement('div');
+      pixel.setAttribute('id', 'pixel');
+      if (cell.alive) {
+        pixel.setAttribute('style', 'background-color:#a6d400;');
+        if (cell.defense) {
+          pixel.setAttribute('style', 'background-color:#8BE3D9;');
+        }
+        if (cell.infectious || cell.exposed) {
+          pixel.setAttribute('style', 'background-color:#ea5a47;');
+        }
+        if (cell.recovery) {
+          pixel.setAttribute('style', 'background-color:#a6d400;');
+        }
+      }
+      else {
+        pixel.setAttribute('style', 'background-color:black;');
+      }
+      cellElement.appendChild(pixel);
+      return cellElement;
+    }
+    function emojiCell(cell, cellElement, sprites, rangeFind) {
+      // renders cell as pixel
+
+      let img = document.createElement('img');
+      img.setAttribute('id', 'cellState');
+      if (cell.alive) {
+        if (cell.age < 3) {
+          img.src = sprites[0];
+        } else {
+          img.src = sprites[1];
+          if (cell.exposed) {
+            img.src = sprites[2];
+          }
+          if (cell.infectious) {
+            img.src = sprites[3];
+          }
+          if (cell.recovery) {
+            if (rangeFind) {
+              img.setAttribute('style', 'height:0%;width:0%;');
+            }
+            img.src = sprites[4];
+          }
+          if (cell.defense) {
+            let mask = document.createElement('img');
+            mask.src = 'asssets/CellSprites/defenses/maskSurgical.svg'
+            mask.setAttribute('id', 'mask');
+            cellElement.appendChild(mask);
+          }
+          if (cell.vaxxed) {
+            let vaccine = document.createElement('img');
+            vaccine.src = 'asssets/CellSprites/defenses/syringe.svg'
+            vaccine.setAttribute('id', 'vax');
+            cellElement.appendChild(vaccine);
+          }
+        }
+      } else {
+        img.src = sprites[5];
+      }
+      cellElement.appendChild(img);
+      return cellElement;
+    }
     // clear the current board state
     let canvas = document.getElementById(canvasId);
     canvas.querySelectorAll("[id=cell]").forEach((cell) => {
@@ -277,80 +374,57 @@ class Game {
     canvas.querySelectorAll("[id=vax]").forEach((cell) => {
       cell.remove();
     });
-    let cssId = 'cell';
-    if (this.pixelRender) {
-      let cssId = '';
-    }
     // place each cell with updated values
     this.board2D.forEach((row) => {
       row.forEach((cell) => {
-        let cellSize = ((1 / this.size) * 100).toString();
-        let h = 'height: ' + cellSize + '%; '
-        let w = 'width: ' + cellSize + '%; '
-        let cellElement = document.createElement('div');
-        cellElement.setAttribute('id', 'cell');
-        cellElement.setAttribute('style', h + w);
-
+        let cellElement = normalCell(cell, this.size);
         if (this.pixelRender) {
-          let pixel = document.createElement('div');
-          pixel.setAttribute('id', 'pixel');
-          if (cell.alive) {
-            pixel.setAttribute('style', 'background-color:#ffe0bd;');
-            if (cell.defense) {
-              pixel.setAttribute('style', 'background-color:#8BE3D9;');
-            }
-            if (cell.state === 1) {
-              pixel.setAttribute('style', 'background-color:#F72427;');
-            }
-            if (cell.state === 2) {
-              pixel.setAttribute('style', 'background-color:#78C165;');
-            }
-          }
-          else {
-            pixel.setAttribute('style', 'background-color:black;');
-          }
-          cellElement.appendChild(pixel);
+          cellElement = pixelCell(cell, cellElement);
         } else {
-          let img = document.createElement('img');
-          if (cell.defense) {
-            img.src = this.sprites[cell.state + 3];
-          } else {
-            img.src = this.sprites[cell.state];
-          }
-          if (!cell.alive) {
-            img.src = this.sprites[6];
-          }
-          img.setAttribute('id', 'cellState');
-          if (cell.vaxxed) {
-            let vaccine = document.createElement('img');
-            vaccine.src = 'asssets/CDAThemes/Emoticon/syringe.svg'
-            vaccine.setAttribute('id', 'vax');
-            cellElement.appendChild(vaccine);
-          }
-          cellElement.appendChild(img);
+          let cellWall = document.createElement('div');
+          cellWall.setAttribute('id', 'cellWall');
+          cellWall = emojiCell(cell, cellWall, this.sprites, this.isRangeFinder);
+          cellElement.appendChild(cellWall);
         }
-
         document.getElementById(canvasId).appendChild(cellElement);
       });
     })
   }
   mortalityEval(cell) {
     // New ! and refractored
+    let body = [];
     cell.body.forEach((virus) => {
-      let killRate = virus.genes['Kill Rate'] / 100;
-      if (cell.defenses.length > 0) {
-        cell.defenses.forEach((shield) => {
-          killRate = killRate * shield.mortalityReduction;
-        });
-      }
-      if (cell.dice.roll(killRate)) {
-        cell.state = 3;
-        cell.body = [];
-        cell.alive = false;
-      } else {
-        cell.state = 2;
-      }
+      if (virus.dead) {
+          let killRate = virus.genes['Kill Rate'] / 100;
+          if (cell.defenses.length > 0) {
+            cell.defenses.forEach((shield) => {
+              killRate = killRate * shield.mortalityReduction;
+            });
+          }
+          if (this.dice.roll(killRate)) {
+            cell.alive = false;
+            cell.exposed = false;
+            cell.susceptible = false;
+            cell.recovery = false;
+          } else {
+            cell.alive = true;
+            cell.susceptible = true;
+            cell.exposed = false;
+            cell.infectious = false;
+          }
+        } else {
+          body.push(virus);
+          if (virus.infectious) {
+            cell.infectious = true;
+          } else {
+            if (virus.age > (virus.genes['Incubation'] + virus.genes['Infectious'])) {
+              cell.recovery = true;
+              cell.infectious = false;
+            }
+          }
+        }
     });
+    cell.body = body;
   }
   birthEval(cell, birthRate) {
 
@@ -363,8 +437,9 @@ class Game {
     if ((aliveNeighbors / cell.neighbors.length) > 0.5) {
       if (this.dice.roll(birthRate)) {
         cell.state = 0;
-        cell.body = [];
         cell.alive = true;
+        cell.age = 0;
+        cell.exposed = false;
       }
     }
     return cell;
@@ -375,18 +450,20 @@ class Game {
     let dead = 0;
     let infectious = 0;
     let zombie = 0;
+    let birthRate = this.settings[0]['Birth Rate'] / 100;
+
     board.forEach((cell) => {
       if (cell.alive) {
+        cell.age += 1;
         cell.live();
-        if (cell.isSick()) {
+        if (cell.exposed) {
           infectious += 1;
-        }
-        if (cell.state === 2) {
-          zombie += 1;
+          if (cell.recovery) {
+            zombie += 1;
+            this.mortalityEval(cell);
+          }
         }
       } else {
-        //cell.state = 3;
-        let birthRate = this.settings[0]['Birth Rate'] / 100;
         if (birthRate > 0) {
           this.birthEval(cell, birthRate);
         }
@@ -421,6 +498,32 @@ class SimulationController {
     this.settings.forEach((i) => {
       settings[i.id] = i.update();
     });
+    if (this.location === 'maskSettings') {
+      let protection = this.settings[0].value;
+      let maskSet = document.getElementById('maskSettings');
+      let children = maskSet.children[0]
+      let cell = children.children[0].children[1];
+      cell.src = 'asssets/CellSprites/person.svg';
+
+      let margin = (100 - protection) * 0.20;
+      margin = margin.toString();
+      let style = 'margin-top:' + margin + '%';
+      let mask = children.children[0].children[0];
+      mask.setAttribute('style', style);
+      console.log(protection);
+      if (protection > 69) {
+        if (protection > 94) {
+          mask.setAttribute('style', 'width:0%;height:0%;');
+          //mask.src = '';
+          cell.src = 'asssets/CellSprites/nuclear protection.svg';
+        } else {
+          mask.src = 'asssets/CellSprites/defenses/maskN95.svg';
+        }
+      } else {
+        mask.src = 'asssets/CellSprites/defenses/maskSurgical.svg';
+      }
+
+    }
     return settings;
   }
 }
@@ -471,139 +574,6 @@ class Slider {
       }
     }
     return val;
-  }
-}
-class Enviroment {
-  constructor(game) {
-    // init defualt game enviroment
-    this.game = game;
-    this.isRunning = false;
-    let neighborhoodSettings = [
-      // id, min, max, defualt, displayPercent,
-      ['Population Size', 5, 100, 15, false],
-      ['Birth Rate', 1, 100, 3, true],
-      ['Seed Infections', 1, 100, 3, true],
-    ];
-    let maskSettings = [
-      // These are the defualt settings for surgical masks.
-      // Face masks can reduce mortality, see:
-      // https://consultqd.clevelandclinic.org/face-masks-reduce-risk-of-covid-19-infection-but-should-be-used-with-other-interventions/
-      ['Rate', 0, 100, 50, true],
-      ['Protection', 0, 100, 20, true],
-      ['Dampening', 0, 100, 81, true],
-      ['Mortality Reduction', 0, 100, 0, true],
-    ];
-    let inoculationSettings = [
-      // These are the defualt settings for surgical masks.
-      // id, min, max, defualt, displayPercent,
-      ['Rate', 0, 100, 12, true],
-      ['Protection', 0, 25, 80, true],
-      ['Dampening', 0, 25, 0, true],
-      ['Mortality Reduction', 0, 100, 80, true]
-    ];
-    let contagionSettings = [
-      // defualt to Wuhan Strain
-      // id, min, max, defualt/current, displayPercent,
-      ['Kill Rate', 0, 100, 3, true],
-      ['Decay Rate', 0, 100, 3, true],
-      ['Incubation', 0, 100, 2, false],
-      ['Infectious', 1, 100, 2, false],
-      ['Attack Rate', 0, 100, 41, true],
-      ['Range', 1, 6, 20, false]
-    ];
-    this.settings = [
-      new SimulationController(neighborhoodSettings, 'neighborhoodSettings'),
-      new SimulationController(maskSettings, 'maskSettings'),
-      new SimulationController(inoculationSettings, 'inoculationSettings'),
-      new SimulationController(contagionSettings, 'contagionSettings'),
-    ];
-
-    let div = document.createElement('div');
-    div.setAttribute('id', 'rangeViewer');
-    document.getElementById('contagionSettings').appendChild(div);
-
-    this.rangeFinder = new Game('Emoji');
-    this.rangeFinder.isRangeFinder = true;
-
-  }
-  update() {
-    this.settingsCurrent = [];
-    this.settings.forEach((setting) => {
-      this.settingsCurrent.push(setting.update());
-    });
-    document.getElementById("petriDish").innerHTML = '';
-    this.game.buildBoard(this.settingsCurrent);
-
-    // build range finder
-    let set = JSON.parse(JSON.stringify(this.settingsCurrent));
-    set[0]['Population Size'] = 13;
-    set[1]['Rate'] = 0;
-    set[2]['Rate'] = 0;
-    this.rangeFinder.buildBoard(set);
-    let index = Math.round(set[0]['Population Size']/2);
-    let centerCell = this.rangeFinder.board2D[index-1][index-1];
-    this.rangeFinder.board2D.forEach((row) => {
-      row.forEach((cell) => {
-        cell.state = 2;
-      });
-    });
-    centerCell.state = 0;
-    centerCell.neighbors.forEach((neighborCell) => {
-      neighborCell.state = 1;
-    });
-
-
-    let numNeighbors = centerCell.neighbors.length;
-    let rNaught = (numNeighbors * (set[3]['Attack Rate']/100)) * set[3]['Infectious'];
-    if (rNaught > centerCell.neighbors.length) {
-      rNaught = centerCell.neighbors.length;
-    }
-    //'R0 = ' + rNaught.toString()
-    rNaught = 'R-Naught = ' + rNaught.toString();
-    let rNaughtDiv = document.createElement('div');
-    rNaughtDiv.setAttribute('id', 'rNaught');
-    document.getElementById('rNaught').innerHTML = rNaught;
-    this.rangeFinder.render('rangeViewer');
-
-    this.stopGame();
-    this.playGame(0);
-  }
-  playGame(day) {
-    this.isRunning = true;
-    let lastBoard = this.game.board;
-    let delay = 10;
-    let mu = 21;
-    let goldenRation = 1.61803;
-    //let graph = new Statistics();
-    this.interval = setInterval(() => {
-       let start = Date.now();
-       this.game.render("petriDish");
-       let stats = this.game.turn();
-       day += 1;
-       let time = "Day: " + day.toString();
-       if (day > 365) {
-         time = "Year: " + (day / 365).toString().substring(0, 4);
-       }
-       if (day % mu == 0) {
-         let foo = new Statistics(this.game.longStats);
-         //mu = mu + Math.round(mu * goldenRation);
-         //mu = mu + 4;
-       }
-       document.getElementById("deaths").innerHTML = "💀 = " + stats['dead'].toString() + '%';
-       document.getElementById("days").innerHTML = time;
-       if (stats['infectious'] < 1 ) {
-         this.stopGame()
-         let foo = new Statistics(this.game.longStats);
-       }
-       let delta = Date.now() - start; // currently around 140-250 seconds for population of 1225
-       //console.log(delta);
-     }, delay);
-  }
-  stopGame() {
-    if (this.isRunning) {
-      clearInterval(this.interval);
-      this.isRunning = false;
-    }
   }
 }
 class Statistics {
@@ -666,7 +636,144 @@ class Statistics {
     };
     return trace;
   }
+}
+class Enviroment {
+  constructor(game) {
+    // init defualt game enviroment
+    this.game = game;
+    this.isRunning = false;
+    let neighborhoodSettings = [
+      // id, min, max, defualt, displayPercent,
+      ['Population Size', 5, 100, 15, false],
+      ['Birth Rate', 1, 100, 3, true],
+      ['Seed Infections', 1, 100, 3, true],
+    ];
+    let maskSettings = [
+      // These are the defualt settings for surgical masks.
+      // Face masks can reduce mortality, see:
+      // https://consultqd.clevelandclinic.org/face-masks-reduce-risk-of-covid-19-infection-but-should-be-used-with-other-interventions/
+      ['Protection', 0, 100, 20, true],
+      ['Dampening', 0, 100, 81, true],
+      ['Mortality Reduction', 0, 100, 0, true],
+      ['Rate', 0, 100, 50, true],
+    ];
+    let inoculationSettings = [
+      // These are the defualt settings for surgical masks.
+      // id, min, max, defualt, displayPercent,
+      ['Protection', 0, 25, 80, true],
+      ['Dampening', 0, 25, 0, true],
+      ['Mortality Reduction', 0, 100, 80, true],
+      ['Rate', 0, 100, 12, true],
+    ];
+    let contagionSettings = [
+      // defualt to Wuhan Strain
+      // id, min, max, defualt/current, displayPercent,
+      ['Kill Rate', 0, 100, 3, true],
+      ['Decay Rate', 0, 100, 3, true],
+      ['Incubation', 0, 100, 2, false],
+      ['Infectious', 1, 100, 2, false],
+      ['Attack Rate', 0, 100, 41, true],
+      ['Range', 1, 6, 20, false]
+    ];
 
+    this.settings = [
+      new SimulationController(neighborhoodSettings, 'neighborhoodSettings'),
+      new SimulationController(maskSettings, 'maskSettings'),
+      new SimulationController(inoculationSettings, 'inoculationSettings'),
+      new SimulationController(contagionSettings, 'contagionSettings'),
+    ];
+
+    let div = document.createElement('div');
+    div.setAttribute('id', 'rangeViewer');
+    document.getElementById('contagionSettings').appendChild(div);
+
+    this.rangeFinder = new Game('Emoji');
+    this.rangeFinder.isRangeFinder = true;
+
+
+  }
+  update() {
+    this.settingsCurrent = [];
+    this.settings.forEach((setting) => {
+      this.settingsCurrent.push(setting.update());
+    });
+    document.getElementById("petriDish").innerHTML = '';
+    this.game.buildBoard(this.settingsCurrent);
+
+
+    // build range finder
+    let set = JSON.parse(JSON.stringify(this.settingsCurrent));
+    set[0]['Population Size'] = 13;
+    set[1]['Rate'] = 0;
+    set[2]['Rate'] = 0;
+    this.rangeFinder.buildBoard(set);
+    let index = Math.round(set[0]['Population Size']/2);
+    let centerCell = this.rangeFinder.board2D[index-1][index-1];
+    this.rangeFinder.board2D.forEach((row) => {
+      row.forEach((cell) => {
+        cell.susceptible = true;
+        cell.recovery = true;
+        cell.age = 10;
+      });
+    });
+    centerCell.recovery = false;
+    centerCell.susceptible = false;
+    centerCell.neighbors.forEach((neighborCell) => {
+      neighborCell.susceptible = false;
+      neighborCell.recovery = false;
+      neighborCell.infectious = true;
+    });
+
+
+    let numNeighbors = centerCell.neighbors.length;
+    let rNaught = (numNeighbors * (set[3]['Attack Rate']/100)) * set[3]['Infectious'];
+    if (rNaught > centerCell.neighbors.length) {
+      rNaught = centerCell.neighbors.length;
+    }
+    //'R0 = ' + rNaught.toString()
+    rNaught = 'R-Naught = ' + rNaught.toString();
+    let rNaughtDiv = document.createElement('div');
+    rNaughtDiv.setAttribute('id', 'rNaught');
+    document.getElementById('rNaught').innerHTML = rNaught;
+    this.rangeFinder.render('rangeViewer');
+
+    this.stopGame();
+    this.playGame(0);
+  }
+  playGame(day) {
+    this.isRunning = true;
+    let lastBoard = this.game.board;
+    let delay = 100;
+    let mu = 21;
+
+    this.interval = setInterval(() => {
+       let start = Date.now();
+       this.game.render("petriDish");
+       let stats = this.game.turn();
+       day += 1;
+       let time = "Day: " + day.toString();
+       if (day > 365) {
+         time = "Year: " + (day / 365).toString().substring(0, 4);
+       }
+       document.getElementById("deaths").innerHTML = "💀 = " + stats['dead'].toString() + '%';
+       document.getElementById("days").innerHTML = time;
+       if (stats['infectious'] < 1 ) {
+         this.stopGame()
+         let foo = new Statistics(this.game.longStats);
+       }
+       if (day % mu == 0) {
+         let foo = new Statistics(this.game.longStats);
+         let delta = Date.now() - start; // currently around 140-250 seconds for population of 1225
+         //console.log(delta);
+       }
+     }, delay);
+  }
+  stopGame() {
+    if (this.isRunning) {
+      clearInterval(this.interval);
+      this.isRunning = false;
+    }
+  }
 }
 
 let env = new Enviroment(new Game('Emoji'));
