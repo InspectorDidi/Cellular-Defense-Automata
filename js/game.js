@@ -173,8 +173,8 @@ class Game {
     this.isRangeFinder = false;
     this.dice = new Dice();
     this.styles = {
-      'Emoji':  'asssets/CellSprites/',
-      'Forest': 'asssets/CDAThemes/Forest/',
+      'Emoji':  'assets/CellSprites/',
+      'Forest': 'assets/CDAThemes/Forest/',
     }
     this.stats = {};
     this.gamestyle = gamestyle;
@@ -192,11 +192,11 @@ class Game {
     if (this.isRangeFinder) {
       let path = this.styles[this.gamestyle];
       this.sprites = [
-        "asssets/CellSprites/personExposed.svg",
-        "asssets/CellSprites/personInfectious.svg",
-        "asssets/CellSprites/personInfectious.svg",
-        "asssets/virus.svg",
-        "asssets/CellSprites/personInfectious.svg",
+        "assets/CellSprites/personExposed.svg",
+        "assets/CellSprites/personInfectious.svg",
+        "assets/CellSprites/personInfectious.svg",
+        "assets/virus.svg",
+        "assets/CellSprites/personInfectious.svg",
         path + "Defense/2.png",
         path + "RIP.png"
         ];
@@ -349,13 +349,13 @@ class Game {
           }
           if (cell.defense) {
             let mask = document.createElement('img');
-            mask.src = 'asssets/CellSprites/defenses/maskSurgical.svg'
+            mask.src = 'assets/CellSprites/defenses/maskSurgical.svg'
             mask.setAttribute('id', 'mask');
             cellElement.appendChild(mask);
           }
           if (cell.vaxxed) {
             let vaccine = document.createElement('img');
-            vaccine.src = 'asssets/CellSprites/defenses/syringe.svg'
+            vaccine.src = 'assets/CellSprites/defenses/syringe.svg'
             vaccine.setAttribute('id', 'vax');
             cellElement.appendChild(vaccine);
           }
@@ -503,7 +503,7 @@ class SimulationController {
       let maskSet = document.getElementById('maskSettings');
       let children = maskSet.children[0]
       let cell = children.children[0].children[1];
-      cell.src = 'asssets/CellSprites/person.svg';
+      cell.src = 'assets/CellSprites/person.svg';
 
       let margin = (100 - protection) * 0.20;
       margin = margin.toString();
@@ -515,12 +515,12 @@ class SimulationController {
         if (protection > 94) {
           mask.setAttribute('style', 'width:0%;height:0%;');
           //mask.src = '';
-          cell.src = 'asssets/CellSprites/nuclear protection.svg';
+          cell.src = 'assets/CellSprites/nuclear protection.svg';
         } else {
-          mask.src = 'asssets/CellSprites/defenses/maskN95.svg';
+          mask.src = 'assets/CellSprites/defenses/maskN95.svg';
         }
       } else {
-        mask.src = 'asssets/CellSprites/defenses/maskSurgical.svg';
+        mask.src = 'assets/CellSprites/defenses/maskSurgical.svg';
       }
 
     }
