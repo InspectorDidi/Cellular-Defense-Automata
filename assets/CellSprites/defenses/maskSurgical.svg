@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="emoji"
+   viewBox="0 0 72 72"
+   version="1.1"
+   sodipodi:docname="maskSurgical.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata41">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs39" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
+     id="namedview37"
+     showgrid="false"
+     inkscape:zoom="13.111111"
+     inkscape:cx="31.588421"
+     inkscape:cy="26.177691"
+     inkscape:window-x="0"
+     inkscape:window-y="44"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="emoji" />
+  <g
+     id="line">
+    <path
+       fill="none"
+       stroke="#000"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       stroke-width="2"
+       d="M32.6992,44.7333c-1.3329.0108-3.6242-1.852-4.4966-3.071a14.784,14.784,0,0,1-2.4335-5.8174l-.1394-.45,8.9093-2.2974a5.6017,5.6017,0,0,1,2.8794.0182l8.4081,2.2792H46.37a14.4865,14.4865,0,0,1-1.8409,5.7962c-.877,1.4159-3.28,3.4562-4.7422,3.4681Z"
+       id="path27" />
+    <line
+       x1="46.1692"
+       x2="49.4774"
+       y1="35.1649"
+       y2="32.5319"
+       fill="none"
+       stroke="#000"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       stroke-width="2"
+       id="line29" />
+    <line
+       x1="25.6297"
+       x2="22.3298"
+       y1="35.1649"
+       y2="32.117"
+       fill="none"
+       stroke="#000"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       stroke-width="2"
+       id="line31" />
+  </g>
+  <path
+     style="fill:#00ffff;stroke-width:0.07627118"
+     d="m 31.959229,43.460993 c -2.082678,-1.013696 -3.751303,-3.137755 -4.693296,-5.974288 -0.358378,-1.079148 -0.397259,-1.324233 -0.218935,-1.380055 0.07732,-0.0242 1.942482,-0.510715 4.144813,-1.081136 3.719005,-0.963253 4.055851,-1.037592 4.728814,-1.043618 0.70272,-0.0063 0.84536,0.02625 4.728813,1.078869 2.202331,0.596945 4.128643,1.121515 4.280695,1.165709 l 0.276458,0.08035 -0.138341,0.633058 c -0.214504,0.981584 -0.566939,1.967977 -1.075302,3.009542 -0.446861,0.915557 -0.500489,0.988388 -1.351451,1.835376 -0.895387,0.891205 -1.703394,1.474837 -2.365004,1.708266 -0.271245,0.0957 -0.997672,0.124502 -4.078121,0.161688 l -3.748086,0.04525 z"
+     id="path16"
+     inkscape:connector-curvature="0" />
+</svg>
