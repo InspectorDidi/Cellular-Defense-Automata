@@ -3,6 +3,112 @@
   width: 100%;
   height: 100%;
 }
+.sliderInput {
+  -webkit-appearance: none;
+  width: 50px;
+  height: 15px;
+  outline: none;
+  border: 1px solid #d0cfceff;
+  border-radius: 50px;
+}
+.sliderInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 3vw;
+  height:  3vw;
+  cursor: pointer;
+  background-image: url('../assets/petri dish.svg');  #00D no-repeat fixed;
+}
+.sliderInput::-webkit-slider-thumb:hover {
+  border-radius: 50px;
+  background-color: #92d3f59a;
+  background-image: url('../assets/microbe.svg');  #00D no-repeat fixed;
+  width: 4.85vw;
+  height: 4.85vw;
+  border: 2px solid black;
+  border-radius: 90px;
+}
+
+.sliderInput::-moz-range-thumb {
+  width: 20px;
+  height: 60px;
+  background: #000;
+  cursor: pointer;
+  border: 5px solid lawngreen;
+  border-radius: 4px;
+}
+.dropdown{
+  text-align: center;
+  font:inherit;
+  background: none;
+  height: 50px;
+  width: 30%;
+  margin-top:5%;
+  border: solid 2px;
+  border-radius: 50px;
+  position: relative;
+  display: inline-block;
+  font-size: 100%;
+  font-weight: 900;
+  float: left;
+  margin-left:5%;
+}
+.dropdown-content{
+  background-color: white;
+  border:inherit;
+  border-radius:4px;
+  background-size: cover;
+  display: none;
+  position: absolute;
+  width: 160%;
+  margin-left: -30%;
+}
+.MemeSettings {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.MemeSettings:hover {
+  background: #92d3f5ff;
+  background-image: url('../assets/dna.svg');
+  background-size:20%;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+#nosign {
+  margin-top:-150%;
+  height: 100%;
+  display: inline-block;
+  width: 100%;
+}
+#evolve {
+  height: 100%;
+  width: 100%;
+}
+#evolution {
+  border: solid 2px;
+  border-radius: 15px;
+  width: 30%;
+
+  float: right;
+  margin-right:5%;
+}
+#ebutton:hover  {
+  opacity: 90%;
+}
+#select {
+  margin-top:-70%;
+  margin-left:30%;
+  float: left;
+  position: relative;
+  width: 70%;
+}
+#select:hover {
+  width: 50%;
+  margin-top:-55%;
+  margin-left:20%;
+}
 #pixel {
   height: 100%;
   width: 100%;
@@ -52,7 +158,7 @@
   margin: 0px;
   border: solid 2px;
   border-radius: 40px;
-  width: 20%;
+  width: 400px;
   margin: 1%;
 }
 #petriDish {
@@ -64,7 +170,6 @@
   transform: translate(-50%, -50%);
 }
 #rangeViewer {
-
   width:19.5vw; height:19.5vw;
   margin-left:0vw;
 }
@@ -72,20 +177,18 @@
   border: solid 2px;
   border-radius: 40px;
   float:left;
-  width:40vw;
-  height:40vw;
-  margin: 4%;
-  margin-left:7.5%;
+  width:800px;
+  height:800px;
+  margin: 1%;
+
 }
 #graph {
   border: solid 2px;
   border-radius: 40px;
   float:left;
-  width:50%;
-  height:40vw;
-  margin: 2%;
-  margin-top:-2%;
-  margin-left: 3%;
+  width:800px;
+  height:600px;
+  margin: 1%;
 }
 #settings {
   float: left;
@@ -108,7 +211,7 @@
   border-bottom: 1px solid black;
 }
 .sliderInput {
-  width:96%;
+  width:98%;
 }
 .sliderText {
   font-size:100%;
