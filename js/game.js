@@ -48,18 +48,20 @@ class Meme {
       mutated = true;
     }
 
-    // if (mutated) {
-    //   console.log(this.genes["Kill Rate"]);
-    //   console.log(this.genes["Decay Rate"]);
-    //   console.log(this.genes["Incubation"]);
-    //   console.log(this.genes["Infectious"]);
-    //   console.log(this.genes["Attack Rate"]);
-    //   console.log('---------------------------');
-    // }
+    if (mutated) {
+      console.log(this.genes["Kill Rate"]);
+      console.log(this.genes["Decay Rate"]);
+      console.log(this.genes["Incubation"]);
+      console.log(this.genes["Infectious"]);
+      console.log(this.genes["Attack Rate"]);
+      console.log('---------------------------');
+    }
   }
-  copy() {
+  copy(mutate) {
     let child = new Meme(JSON.parse(JSON.stringify(this.genes)));
-    //child.mutate();
+    if (mutate) {
+      child.mutate();
+    }
     return child;
   }
 }
@@ -81,7 +83,7 @@ class Cell {
     this.neighbors = [];
     this.body = [];
   }
-  live() {
+  live(mutate) {
     // Handles cells interactions with neighbors  (i.e. viral attacks!)
     let body = [];
     this.body.forEach((virus) => {
@@ -91,7 +93,7 @@ class Cell {
           // attack the neighbors!
           if (neighborCell.susceptible) {
               if (new Dice().roll(attackRate * neighborCell.protection)) {
-                neighborCell.body.push(virus.copy());
+                neighborCell.body.push(virus.copy(mutate));
                 neighborCell.exposed = true;
                 neighborCell.susceptible = false;
               }
@@ -170,6 +172,7 @@ class Dice {
 }
 class Game {
   constructor(gamestyle) {
+    this.mutation = false;
     this.isRangeFinder = false;
     this.dice = new Dice();
     this.styles = {
@@ -455,7 +458,7 @@ class Game {
     board.forEach((cell) => {
       if (cell.alive) {
         cell.age += 1;
-        cell.live();
+        cell.live(this.mutation);
         if (cell.exposed) {
           infectious += 1;
           if (cell.recovery) {
@@ -576,6 +579,31 @@ class Slider {
     return val;
   }
 }
+class NaturalSelector {
+  constructor() {
+    this.on = false;
+  }
+  toggle () {
+    if (this.on) {
+      this.on = false;
+    } else {
+      this.on = true;
+    }
+    this.update();
+  }
+  update () {
+    let sign = document.getElementById('nosign');
+    let select = document.getElementById('select');
+    if (this.on) {
+      sign.setAttribute('style', 'display:none;');
+      select.setAttribute('style', '');
+      select.src ='assets/cursor.svg';
+    } else {
+      sign.setAttribute('style', '');
+      select.setAttribute('style', 'display:none;');
+    }
+  }
+}
 class Statistics {
   constructor(data) {
     // clear the current board state
@@ -640,12 +668,13 @@ class Statistics {
 class Enviroment {
   constructor(game) {
     // init defualt game enviroment
+    this.naturalSelector = new NaturalSelector();
     this.game = game;
     this.isRunning = false;
     let neighborhoodSettings = [
       // id, min, max, defualt, displayPercent,
-      ['Population Size', 5, 100, 15, false],
-      ['Birth Rate', 1, 100, 3, true],
+      ['Population Size', 5, 100, 5, false],
+      ['Birth Rate', 1, 100, 0, true],
       ['Seed Infections', 1, 100, 3, true],
     ];
     let maskSettings = [
@@ -669,9 +698,9 @@ class Enviroment {
       // defualt to Wuhan Strain
       // id, min, max, defualt/current, displayPercent,
       ['Kill Rate', 0, 100, 3, true],
-      ['Decay Rate', 0, 100, 3, true],
-      ['Incubation', 0, 100, 2, false],
-      ['Infectious', 1, 100, 2, false],
+      ['Decay Rate', 0, 100, 2, true],
+      ['Incubation', 1, 100, 2, false],
+      ['Infectious', 1, 100, 1, false],
       ['Attack Rate', 0, 100, 41, true],
       ['Range', 1, 6, 20, false]
     ];
@@ -693,6 +722,7 @@ class Enviroment {
 
   }
   update() {
+    console.clear();
     this.settingsCurrent = [];
     this.settings.forEach((setting) => {
       this.settingsCurrent.push(setting.update());
@@ -741,7 +771,9 @@ class Enviroment {
     this.playGame(0);
   }
   playGame(day) {
+    let selection = this.naturalSelector.on;
     this.isRunning = true;
+    this.game.mutation = selection;
     let lastBoard = this.game.board;
     let delay = 100;
     let mu = 21;
@@ -757,7 +789,7 @@ class Enviroment {
        }
        document.getElementById("deaths").innerHTML = "💀 = " + stats['dead'].toString() + '%';
        document.getElementById("days").innerHTML = time;
-       if (stats['infectious'] < 1 ) {
+       if (stats['infectious'] <= 1 ) {
          this.stopGame()
          let foo = new Statistics(this.game.longStats);
        }
@@ -777,5 +809,4 @@ class Enviroment {
 }
 
 let env = new Enviroment(new Game('Emoji'));
-
 env.update();
