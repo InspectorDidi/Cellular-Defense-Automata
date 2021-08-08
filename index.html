@@ -34,7 +34,15 @@
     </div>
     <div id="panel" style='float:right;' onchange="env.update();">
       <div id="contagionSettings">
-        <p id="text">Contagion</p>
+        <p id="text">Meme</p>
+        <div id='evolution'onclick='env.naturalSelector.toggle();env.update();'>
+          <div id='ebutton'>
+            <img id='evolve' src="assets/natural selection.svg">
+            <img id='select' src="">
+            <img id='nosign' src="assets/no sign.svg">
+            <p id="text">Natural Selection</p>
+          </div>
+        </div>
         <img src="assets/virus.svg">
       </div>
       <div id='rNaught'></div>
