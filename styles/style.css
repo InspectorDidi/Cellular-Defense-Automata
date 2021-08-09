@@ -3,6 +3,12 @@
   width: 100%;
   height: 100%;
 }
+#container {
+  margin-top:1%;
+  margin-left: 8%;
+  width: 61.8+9.5%;
+  background: black;
+}
 .sliderInput {
   -webkit-appearance: none;
   width: 50px;
@@ -28,7 +34,6 @@
   border: 2px solid black;
   border-radius: 90px;
 }
-
 .sliderInput::-moz-range-thumb {
   width: 20px;
   height: 60px;
@@ -73,7 +78,6 @@
   background-image: url('../assets/dna.svg');
   background-size:12%;
 }
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
 #nosign {
   margin-top:-150%;
@@ -89,7 +93,6 @@
   border: solid 2px;
   border-radius: 15px;
   width: 30%;
-
   float: right;
   margin-right:5%;
 }
@@ -144,21 +147,16 @@
   width: 25%;
   height: 25%;
 }
-#stat {
-  float: left;
-  margin-top:2.5%;
-  margin-left:2.5%;
-  width: 90%;
-  height: 90%;
-  text-size: 900;
-}
 #panel {
-  float: left;
-  margin: 0px;
   border: solid 2px;
   border-radius: 40px;
-  width: 400px;
-  margin: 1%;
+  width: 19%;
+  float: left;
+  position: relative;
+}
+#panelMid {
+  width: 52%;
+  float: left;
 }
 #petriDish {
   width:75%;
@@ -169,25 +167,32 @@
   transform: translate(-50%, -50%);
 }
 #rangeViewer {
-  width:19.5vw; height:19.5vw;
-  margin-left:0vw;
+  width:17vw;
+  height:17vw;
 }
 .neighborhood {
+  margin:9.5%;
   border: solid 2px;
   border-radius: 40px;
   float:left;
-  width:800px;
-  height:800px;
-  margin: 1%;
-
+  width:38vw;
+  height:38vw;
 }
 #graph {
   border: solid 2px;
   border-radius: 40px;
   float:left;
-  width:800px;
-  height:600px;
-  margin: 1%;
+  width:95%;
+  height:32vw;
+  margin-left: 2.5%;
+  margin-top: -8%;
+}
+#stat {
+  float: left;
+  margin-top:2.5%;
+  margin-left:1.5%;
+  width: 90%;
+  height: 90%;
 }
 #settings {
   float: left;
@@ -204,13 +209,14 @@
   margin-bottom:50px;
 }
 #slider {
-  font-weight: 400;
+  font-size: 0.65vw;
   font-family: Helvetica;
   text-align: center;
   border-bottom: 1px solid black;
+  width: 100%;
 }
 .sliderInput {
-  width:98%;
+  width:90%;
 }
 .sliderText {
   font-size:100%;
@@ -236,9 +242,11 @@
   font-family: Helvetica;
   text-align: center;
   font-weight: 900;
+  font-size: 0.9vw;
 }
 #rNaught {
   font-family: Helvetica;
   text-align: center;
   font-weight: 900;
+  font-size: 0.9vw;
 }
