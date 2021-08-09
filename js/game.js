@@ -18,6 +18,7 @@ class Meme {
         if (new Dice().roll(decayRate)) {
           this.dead = true;
         }
+
       }
     }
     this.age += 1;
@@ -48,14 +49,14 @@ class Meme {
       mutated = true;
     }
 
-    if (mutated) {
-      console.log(this.genes["Kill Rate"]);
-      console.log(this.genes["Decay Rate"]);
-      console.log(this.genes["Incubation"]);
-      console.log(this.genes["Infectious"]);
-      console.log(this.genes["Attack Rate"]);
-      console.log('---------------------------');
-    }
+    // if (mutated) {
+    //   console.log(this.genes["Kill Rate"]);
+    //   console.log(this.genes["Decay Rate"]);
+    //   console.log(this.genes["Incubation"]);
+    //   console.log(this.genes["Infectious"]);
+    //   console.log(this.genes["Attack Rate"]);
+    //   console.log('---------------------------');
+    // }
   }
   copy(mutate) {
     let child = new Meme(JSON.parse(JSON.stringify(this.genes)));
@@ -502,11 +503,13 @@ class SimulationController {
     this.settings.forEach((i) => {
       settings[i.id] = i.update();
     });
+
     if (this.location === 'maskSettings') {
       let protection = this.settings[0].value;
       let maskSet = document.getElementById('maskSettings');
-      let children = maskSet.children[0]
+      let children = maskSet.children[1]
       let cell = children.children[0].children[1];
+      console.log(children);
       cell.src = 'assets/CellSprites/person.svg';
 
       let margin = (100 - protection) * 0.20;
@@ -514,7 +517,6 @@ class SimulationController {
       let style = 'margin-top:' + margin + '%';
       let mask = children.children[0].children[0];
       mask.setAttribute('style', style);
-      console.log(protection);
       if (protection > 69) {
         if (protection > 94) {
           mask.setAttribute('style', 'width:0%;height:0%;');
@@ -550,7 +552,13 @@ class Slider {
   } build(parentElement) {
     let div = document.createElement('div');
     div.setAttribute('id', 'slider');
-    document.getElementById(parentElement).appendChild(div);
+    let parent = document.getElementById(parentElement);
+    if (this.id === 'Rate') {
+      let firstBorn = parent.children[0];
+      parent.insertBefore(div, parent.firstChild);
+    } else {
+      parent.appendChild(div);
+    }
 
     let text = document.createElement('p');
     let val = this.value;
@@ -672,14 +680,10 @@ class MemeSelector {
     let index = 0;
     while (index < this.variant.length) {
       if (typeof(sliders[index]) !== "undefined") {
-        console.log(sliders[index]);
         sliders[index].value = this.variant[index][3];
       }
       index += 1;
     }
-
-    console.log('updated ' + variantName);
-    console.log(selectedText);
   }
   build() {
     let dropdown = document.getElementsByClassName('dropdown-content')[0];
@@ -765,9 +769,9 @@ class Enviroment {
     this.isRunning = false;
     let neighborhoodSettings = [
       // id, min, max, defualt, displayPercent,
-      ['Population Size', 5, 100, 14, false],
+      ['Population Size', 5, 100, 5, false],
+      ['Seed Infections', 1, 100, 4, true],
       ['Birth Rate', 1, 100, 0, true],
-      ['Seed Infections', 1, 100, 2, true],
     ];
     let maskSettings = [
       // These are the defualt settings for surgical masks.
@@ -804,7 +808,7 @@ class Enviroment {
 
   }
   update() {
-    //console.clear();
+    console.clear();
   //  this.settings[3] = new SimulationController(this.memeSelector.variant, 'contagionSettings');
     this.settingsCurrent = [];
     this.settings.forEach((setting) => {
