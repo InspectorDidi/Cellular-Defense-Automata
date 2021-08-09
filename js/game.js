@@ -26,7 +26,7 @@ class Meme {
     // step forward life cyclec
 
     let mutated = false;
-    let mutateRate = 0.02;
+    let mutateRate = 0.002;
     if (new Dice().roll(mutateRate)) {
       this.genes["Kill Rate"] = Math.round((Math.random() * 35) + 3);
       mutated = true;
@@ -496,7 +496,8 @@ class SimulationController {
       this.settings.push(i);
     });
 
-  } update() {
+  }
+  update() {
     let settings = {};
     this.settings.forEach((i) => {
       settings[i.id] = i.update();
@@ -528,6 +529,14 @@ class SimulationController {
 
     }
     return settings;
+  }
+  build(newSettings) {
+    defualtSettings.forEach((i) => {
+      i = new Slider(i[0], i[1], i[2], i[3], i[4]);
+      i.build(location);
+      this.settings.push(i);
+    });
+
   }
 }
 class Slider {
@@ -604,6 +613,88 @@ class NaturalSelector {
     }
   }
 }
+class MemeSelector {
+  constructor() {
+    this.memes = {'SARS-1':[
+      ['Kill Rate', 0, 100, 11, true], // id, min, max, defualt/current, displayPercent,
+      ['Decay Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 7, false],
+      ['Infectious', 1, 100, 4, false],
+      ['Attack Rate', 0, 100, 18, true],
+      ['Range', 1, 6, 1, false],
+    ],'SARS-2: Wild-Type':[
+      ['Kill Rate', 0, 100, 3, true],
+      ['Decay Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 6, false],
+      ['Infectious', 1, 100, 4, false],
+      ['Attack Rate', 0, 100, 12, true],
+      ['Range', 1, 6, 1, false],
+    ],'SARS-2: Delta':[
+      ['Kill Rate', 0, 100, 3, true],
+      ['Decay Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 2, false],
+      ['Infectious', 1, 100, 4, false],
+      ['Attack Rate', 0, 100, 10, true],
+      ['Range', 1, 6, 20, false],
+    ],'Syphilis':[
+      ['Kill Rate', 0, 100, 8, true],
+      ['Decay Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 20, false],
+      ['Infectious', 1, 100, 13, false],
+      ['Attack Rate', 0, 100, 16, true],
+      ['Range', 1, 6, 2, false],
+    ],'Tuberculosis':[
+      ['Kill Rate', 0, 100, 8, true],
+      ['Decay Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 100, false],
+      ['Infectious', 1, 100, 14, false],
+      ['Attack Rate', 0, 100, 47, true],
+      ['Range', 1, 6, 2, false],
+    ],'Measles':[
+      ['Kill Rate', 0, 100, 1, true],
+      ['Decay Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 14, false],
+      ['Infectious', 1, 100, 5, false],
+      ['Attack Rate', 0, 100, 13, true],
+      ['Range', 1, 6, 40, false],
+    ],
+    };
+    this.build();
+    this.update('SARS-2: Delta');
+    //this.build();
+  }
+  update (variantName) {
+    this.variant = this.memes[variantName];
+    let selectedText = document.getElementsByClassName('dropdown')[0].children[0];
+    selectedText.innerHTML = variantName;
+    let contagionSettings = document.getElementById('contagionSettings');
+    let sliders = contagionSettings.getElementsByClassName('sliderInput');
+    let index = 0;
+    while (index < this.variant.length) {
+      if (typeof(sliders[index]) !== "undefined") {
+        console.log(sliders[index]);
+        sliders[index].value = this.variant[index][3];
+      }
+      index += 1;
+    }
+
+    console.log('updated ' + variantName);
+    console.log(selectedText);
+  }
+  build() {
+    let dropdown = document.getElementsByClassName('dropdown-content')[0];
+    for (let variant in this.memes) {
+      let div = document.createElement('div');
+      div.setAttribute('class', 'MemeSettings');
+      let f = 'env.memeSelector.update("' + variant + '");env.update();'
+      div.setAttribute('onclick', f);
+      let p = document.createElement('p');
+      p.innerHTML = variant;
+      div.appendChild(p);
+      dropdown.appendChild(div);
+    }
+  }
+}
 class Statistics {
   constructor(data) {
     // clear the current board state
@@ -669,13 +760,14 @@ class Enviroment {
   constructor(game) {
     // init defualt game enviroment
     this.naturalSelector = new NaturalSelector();
+    this.memeSelector = new MemeSelector();
     this.game = game;
     this.isRunning = false;
     let neighborhoodSettings = [
       // id, min, max, defualt, displayPercent,
-      ['Population Size', 5, 100, 5, false],
+      ['Population Size', 5, 100, 14, false],
       ['Birth Rate', 1, 100, 0, true],
-      ['Seed Infections', 1, 100, 3, true],
+      ['Seed Infections', 1, 100, 2, true],
     ];
     let maskSettings = [
       // These are the defualt settings for surgical masks.
@@ -694,22 +786,12 @@ class Enviroment {
       ['Mortality Reduction', 0, 100, 80, true],
       ['Rate', 0, 100, 12, true],
     ];
-    let contagionSettings = [
-      // defualt to Wuhan Strain
-      // id, min, max, defualt/current, displayPercent,
-      ['Kill Rate', 0, 100, 3, true],
-      ['Decay Rate', 0, 100, 2, true],
-      ['Incubation', 1, 100, 2, false],
-      ['Infectious', 1, 100, 1, false],
-      ['Attack Rate', 0, 100, 41, true],
-      ['Range', 1, 6, 20, false]
-    ];
 
     this.settings = [
       new SimulationController(neighborhoodSettings, 'neighborhoodSettings'),
       new SimulationController(maskSettings, 'maskSettings'),
       new SimulationController(inoculationSettings, 'inoculationSettings'),
-      new SimulationController(contagionSettings, 'contagionSettings'),
+      new SimulationController(this.memeSelector.variant, 'contagionSettings'),
     ];
 
     let div = document.createElement('div');
@@ -722,7 +804,8 @@ class Enviroment {
 
   }
   update() {
-    console.clear();
+    //console.clear();
+  //  this.settings[3] = new SimulationController(this.memeSelector.variant, 'contagionSettings');
     this.settingsCurrent = [];
     this.settings.forEach((setting) => {
       this.settingsCurrent.push(setting.update());
