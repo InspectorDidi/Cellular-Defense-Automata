@@ -5,60 +5,67 @@
     <script src="./js/plotly.min.js"></script>
   </head>
   <body>
-    <div id="panel" onchange="env.update();">
-      <div id="neighborhoodSettings">
-        <p id="text">Neighbourhood</p>
-        <img src="assets/houses.svg">
-      </div>
-      <p id="text">Defenses</p>
-      <div id='subSettings'>
-        <div id='maskSettings' style='border-right: 1px solid'>
-          <div id='cell'style='margin-bottom:25%;margin-left:12.5%;'>
-            <div id='cellWall'>
-              <img id='mask' src='assets/CellSprites/defenses/maskSurgical.svg'>
-              <img id='cellState' src='assets/CellSprites/person.svg'>
+    <div id='container'>
+      <div id="panel" onchange="env.update();">
+        <div id="neighborhoodSettings">
+          <p id="text">Neighbourhood</p>
+          <img src="assets/houses.svg">
+        </div>
+        <p id="text">Defenses</p>
+        <div id='subSettings'>
+          <div id='maskSettings' style='border-right: 1px solid'>
+            <div id='cell'style='margin:19%;margin-top:23%;margin-bottom:15%;height:70%; width:70%;'>
+              <div id='cellWall'>
+                <img id='mask' src='assets/CellSprites/defenses/maskSurgical.svg'>
+                <img id='cellState' src='assets/CellSprites/person.svg'>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id='subSettings'>
+          <div id='inoculationSettings'>
+            <div style='margin-bottom:-4%;'>
+              <div style='width:100%;height:100%;'>
+                <img src="assets/CellSprites/defenses/syringe.svg">
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div id='subSettings'>
-        <div id='inoculationSettings'>
-          <img src="assets/CellSprites/defenses/syringe.svg">
+      <div id="panelMid">
+        <div class="neighborhood">
+          <div class='topStats' id="deaths">0</div>
+          <div id="days">Days</div>
+          <div id="petriDish"></div>
         </div>
-      </div>
-    </div>
-    <div class="neighborhood">
-      <div class='topStats' id="deaths">0</div>
-      <div id="days">Days</div>
-      <div id="petriDish"></div>
-    </div>
-    <div id="panel" style='float:right;' onchange="env.update();">
-      <div id="contagionSettings">
-        <p id="text"style="font-size:200%;">Meme</p>
-        <div id='evolution'onclick='env.naturalSelector.toggle();env.update();'>
-          <div id='ebutton'>
-            <img id='evolve' src="assets/natural selection.svg">
-            <img id='select' src="">
-            <img id='nosign' src="assets/no sign.svg">
-            <p id="text">Natural Selection</p>
+        <div id="graph">
+          <div id="stat">
+            <p id="text">Loading Statistics...</p>
           </div>
         </div>
-        <div class="dropdown">
+      </div>
+      <div id="panel" onchange="env.update();">
+        <div id="contagionSettings">
           <p id="text">Meme</p>
-          <div class="dropdown-content" >
+          <div id='evolution'onclick='env.naturalSelector.toggle();env.update();'>
+            <div id='ebutton'>
+              <img id='evolve' src="assets/natural selection.svg">
+              <img id='select' src="">
+              <img id='nosign' src="assets/no sign.svg">
+              <p id="text">Natural Selection</p>
+            </div>
           </div>
+          <div class="dropdown">
+            <p id="text">Meme</p>
+            <div class="dropdown-content" >
+            </div>
+          </div>
+          <img src="assets/virus.svg">
         </div>
-        <img src="assets/virus.svg">
+        <div id='rNaught'></div>
+        <div id="subSettings"></div>
       </div>
-      <div id='rNaught'></div>
-
-      <div id="subSettings"></div>
+      <script src="./js/game.js"></script>
     </div>
-    <div id="graph">
-      <div id="stat">
-        <p id="text">Loading Statistics...</p>
-      </div>
-    </div>
-    <script src="./js/game.js"></script>
   </body>
 </html>
