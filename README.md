@@ -6,7 +6,7 @@ Tired of waiting for your herds to reach immunity? Now you can simulate [serial 
 
 ## Model
 
-![](/home/node3/Active Projects/CDA/assets/seirbasic.svg)
+![](/assets/seirbasic.svg)
 
 ### Cell Dynamics
 
@@ -16,13 +16,13 @@ A susceptible member of the population becomes infected (exposed) when making a 
 
 #### Defenses
 
-![](/home/node3/Active Projects/CDA/assets/HowMasksWork.svg)
+![](/assets/HowMasksWork.svg)
 
 All defenses have the same types of variables and can influence the odds of transmission occuring after the attack rate is calculated, such as the level of protection of a mask. Masks and vaccines can be combined together as they provide different types of benefits for the cells.
 
 ## Natural Selection
 
-![](/home/node3/Active Projects/CDA/assets/natural select.svg)
+![](/assets/natural select.svg)
 
 If the Natural Selection button is enabled, the memes mutate their phenotypes and will be allowed to the oppurtunity to evolve each transmission event.
 
