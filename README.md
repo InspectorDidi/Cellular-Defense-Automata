@@ -1,6 +1,6 @@
 # MemeLab:[Live Demo](https://thememeticist.github.io/Cellular-Defense-Automata/)
 
-![](/assets/TitleScreen/MemeLabIOAE.svg)
+![](/assets/MemeLabIOAE.svg)
 
 Tired of waiting for your herds to reach immunity? Now you can simulate [serial passaging](https://en.wikipedia.org/wiki/Serial_passage) 🧫🧫🧫🧫 in your web browser instead of actually serial passaging it! MemeLab is a Javascript contagion simulator for your web browser. Use it to see the effect of masks and vaccines against [memetic pathogens.](https://en.wikipedia.org/wiki/Memetics)
 
