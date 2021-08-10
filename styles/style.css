@@ -3,11 +3,18 @@
   width: 100%;
   height: 100%;
 }
+#banner {
+  width: 61%;
+  height: 61%;
+  margin-left:13%;
+  margin-top:-5%;
+  margin-bottom:-8%;
+}
 #container {
   margin-top:1%;
   margin-left: 8%;
   width: 61.8+9.5%;
-  background: black;
+  background-color: none;
 }
 .sliderInput {
   -webkit-appearance: none;
@@ -153,18 +160,22 @@
   width: 19%;
   float: left;
   position: relative;
+  background:inherit;
 }
 #panelMid {
   width: 52%;
   float: left;
+  background:inherit;
 }
 #petriDish {
-  width:75%;
-  height: 75%;
+  margin-top:15%;
+  width:100%;
+  height: 100%;
   position: relative;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background:none;
 }
 #rangeViewer {
   width:17vw;
@@ -172,11 +183,20 @@
 }
 .neighborhood {
   margin:9.5%;
-  border: solid 2px;
-  border-radius: 40px;
+  margin-bottom: 26%;
+  border: none;
   float:left;
   width:38vw;
   height:38vw;
+  background:none;
+}
+#backgroundPetri {
+  margin-left:-13.2%;
+  margin-top:-12%;
+  width:73vw;
+  height:73vw;
+  background-image: url('../assets/petri dish empty.svg');
+  position: absolute;
 }
 #graph {
   border: solid 2px;
@@ -201,12 +221,14 @@
   font-weight: 900;
   font-family: Helvetica;
   text-align: left;
+  background:inherit;
 }
 #subSettings {
   box-sizing: border-box;
   float: left;
   width: 50%;
   margin-bottom:50px;
+  background:inherit;
 }
 #slider {
   font-size: 0.65vw;
@@ -224,7 +246,6 @@
   float:right;
 }
 .topStats {
-  box-sizing: border-box;
   float: left;
   width:100%;
   margin-top:2%;
