@@ -10,7 +10,7 @@ Tired of waiting for your herds 🐑🐑🐑🐑 to reach immunity? Now you can 
 
 ### Cell Dynamics
 
-The  [SEIR model is a standard compartmental model](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology) in which the population is divided into **susceptible (S)**, **exposed (E)**, **infectious (I)**, and **recovered (R)** individuals. 
+The  [SEIR model is a standard compartmental model](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_model) in which the population is divided into **susceptible (S)**, **exposed (E)**, **infectious (I)**, and **recovered (R)** individuals. 
 
 A susceptible member of the population becomes infected (exposed) when making a transmissive contact with an infectious individual and then progresses to the infectious, then the recovery state (zombie), and finally RIP.
 
