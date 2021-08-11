@@ -1,4 +1,4 @@
-# MemeLab:[Live Demo](https://thememeticist.github.io/Cellular-Defense-Automata/)
+# Meme Lab:[Live Demo](https://thememeticist.github.io/Cellular-Defense-Automata/)
 
 ![](/assets/MemeLabIOAE.svg)
 
