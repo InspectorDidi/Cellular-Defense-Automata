@@ -22,7 +22,7 @@ All defenses have the same types of variables and can influence the odds of tran
 
 ## Natural Selection
 
-![](/assets/natural select.svg)
+![](/assets/TitleScreen/natural select.svg)
 
 If the Natural Selection button is enabled, the memes mutate their phenotypes and will be allowed to the oppurtunity to evolve each transmission event.
 
