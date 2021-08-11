@@ -21,8 +21,8 @@ A susceptible member of the population becomes infected (exposed) when making a 
 All defenses have the same types of variables and can influence the odds of transmission occuring after the attack rate is calculated, such as the level of protection of a mask. Masks and vaccines can be combined together as they provide different types of benefits for the cells.
 
 ## Natural Selection
-
-![](/assets/TitleScreen/natural select.svg)
+![](/assets/seirbasic.svg)
+![]("/assets/TitleScreen/natural select.svg")
 
 If the Natural Selection button is enabled, the memes mutate their phenotypes and will be allowed to the oppurtunity to evolve each transmission event.
 
