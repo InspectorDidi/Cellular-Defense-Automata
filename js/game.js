@@ -14,7 +14,7 @@ class Meme {
       let infectiousPeriod = this.genes["Infectious"];
       if (this.age > (incubationPeriod + infectiousPeriod)) {
         this.infectious = false;
-        let decayRate = this.genes["Decay Rate"] / 100;
+        let decayRate = this.genes['Immunity Wane Rate'] / 100;
         if (new Dice().roll(decayRate)) {
           this.dead = true;
         }
@@ -27,13 +27,13 @@ class Meme {
     // step forward life cyclec
 
     let mutated = false;
-    let mutateRate = 0.002;
+    let mutateRate = 0.01;
     if (new Dice().roll(mutateRate)) {
       this.genes["Kill Rate"] = Math.round((Math.random() * 35) + 3);
       mutated = true;
     }
     if (new Dice().roll(mutateRate)) {
-      this.genes["Decay Rate"] = Math.round(Math.random() * 15);
+      //this.genes["Decay Rate"] = Math.round(Math.random() * 15);
       mutated = true;
     }
     if (new Dice().roll(mutateRate)) {
@@ -48,15 +48,20 @@ class Meme {
       this.genes["Attack Rate"] = Math.round(Math.random() * 100);
       mutated = true;
     }
+    if (new Dice().roll(mutateRate)) {
+      this.genes["Range"] = Math.round(Math.random() * 6);
+      mutated = true;
+    }
 
-    // if (mutated) {
-    //   console.log(this.genes["Kill Rate"]);
-    //   console.log(this.genes["Decay Rate"]);
-    //   console.log(this.genes["Incubation"]);
-    //   console.log(this.genes["Infectious"]);
-    //   console.log(this.genes["Attack Rate"]);
-    //   console.log('---------------------------');
-    // }
+    if (mutated) {
+      console.log(this.genes["Kill Rate"]);
+      console.log(this.genes['Immunity Wane Rate']);
+      console.log(this.genes["Incubation"]);
+      console.log(this.genes["Infectious"]);
+      console.log(this.genes["Attack Rate"]);
+      console.log(this.genes["Range"]);
+      console.log('---------------------------');
+    }
   }
   copy(mutate) {
     let child = new Meme(JSON.parse(JSON.stringify(this.genes)));
@@ -625,42 +630,56 @@ class MemeSelector {
   constructor() {
     this.memes = {'SARS-1':[
       ['Kill Rate', 0, 100, 11, true], // id, min, max, defualt/current, displayPercent,
-      ['Decay Rate', 0, 100, 1, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 7, false],
       ['Infectious', 1, 100, 4, false],
       ['Attack Rate', 0, 100, 18, true],
       ['Range', 1, 6, 1, false],
     ],'SARS-2: Wild-Type':[
-      ['Kill Rate', 0, 100, 3, true],
-      ['Decay Rate', 0, 100, 1, true],
+      ['Kill Rate', 0, 100, 1, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 6, false],
       ['Infectious', 1, 100, 4, false],
       ['Attack Rate', 0, 100, 12, true],
       ['Range', 1, 6, 1, false],
     ],'SARS-2: Delta':[
       ['Kill Rate', 0, 100, 3, true],
-      ['Decay Rate', 0, 100, 1, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 2, false],
       ['Infectious', 1, 100, 4, false],
       ['Attack Rate', 0, 100, 10, true],
       ['Range', 1, 6, 20, false],
+    ],'SARS-2: Delta+':[
+      ['Kill Rate', 0, 100, 3, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 2, false],
+      ['Infectious', 1, 100, 4, false],
+      ['Attack Rate', 0, 100, 17, true],
+      ['Range', 1, 6, 20, false],
+    ],'Omega Virus':[
+      ['Kill Rate', 0, 100, 80, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
+      ['Incubation', 1, 100, 14, false],
+      ['Infectious', 1, 100, 21, false],
+      ['Attack Rate', 0, 100, 90, true],
+      ['Range', 1, 6, 100, false],
     ],'Syphilis':[
       ['Kill Rate', 0, 100, 8, true],
-      ['Decay Rate', 0, 100, 1, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 20, false],
       ['Infectious', 1, 100, 13, false],
       ['Attack Rate', 0, 100, 16, true],
       ['Range', 1, 6, 2, false],
     ],'Tuberculosis':[
       ['Kill Rate', 0, 100, 8, true],
-      ['Decay Rate', 0, 100, 1, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 100, false],
       ['Infectious', 1, 100, 14, false],
       ['Attack Rate', 0, 100, 47, true],
       ['Range', 1, 6, 2, false],
     ],'Measles':[
       ['Kill Rate', 0, 100, 1, true],
-      ['Decay Rate', 0, 100, 1, true],
+      ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 14, false],
       ['Infectious', 1, 100, 5, false],
       ['Attack Rate', 0, 100, 13, true],
