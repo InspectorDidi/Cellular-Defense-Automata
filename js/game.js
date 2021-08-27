@@ -636,7 +636,7 @@ class MemeSelector {
       ['Attack Rate', 0, 100, 18, true],
       ['Range', 1, 6, 1, false],
     ],'SARS-2: Wild-Type':[
-      ['Kill Rate', 0, 100, 1, true],
+      ['Kill Rate', 0, 100, 2, true],
       ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 6, false],
       ['Infectious', 1, 100, 4, false],
