@@ -2,7 +2,7 @@
 
 ![](/assets/MemeLabIOAE.svg)
 
-Tired of waiting for your herds 🐑🐑🐑🐑 to reach immunity? Now you can simulate [serial passaging](https://en.wikipedia.org/wiki/Serial_passage) 🧫🧫🧫🧫 in your web browser instead of serial passaging IRL! MemeLab is a toy model and Javascript contagion simulator for your web browser. Use it to see the effect of masks and vaccines against [pathogens.](https://en.wikipedia.org/wiki/Memetics)
+Tired of waiting for your herds 🐑🐑🐑🐑 to reach immunity? Now you can simulate [serial passaging](https://en.wikipedia.org/wiki/Serial_passage) 🧫🧫🧫🧫 in your web browser instead of serial passaging IRL! MemeLab is a toy model and Javascript contagion simulator. Use it to see the effect of masks and vaccines against [pathogens.](https://en.wikipedia.org/wiki/Memetics)
 
 ## Model
 
@@ -23,5 +23,5 @@ All defenses have the same types of variables and can influence the odds of tran
 ## Natural Selection
 ![](/assets/naturalSelect.svg)
 
-If the Natural Selection button is enabled, the memes mutate their phenotypes and will be allowed to the oppurtunity to evolve each transmission event.
+If the Natural Selection button is enabled, the memes mutate their phenotypes and will be allowed the oppurtunity to evolve each transmission event.
 
