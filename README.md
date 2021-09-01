@@ -1,5 +1,5 @@
 # Meme Lab [Live Demo](https://thememeticist.github.io/Cellular-Defense-Automata/)
-## Instittute Of Armchair Epidemiology
+## Institute Of Armchair Epidemiology
 
 ![](/assets/MemeLabIOAE.svg)
 
