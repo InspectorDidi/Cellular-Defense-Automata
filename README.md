@@ -1,9 +1,9 @@
-# Meme Lab:[Live Demo](https://thememeticist.github.io/Cellular-Defense-Automata/)
+# Meme Lab [Live Demo](https://thememeticist.github.io/Cellular-Defense-Automata/)
 ## Instittute Of Armchair Epidemiology
 
 ![](/assets/MemeLabIOAE.svg)
 
-Tired of waiting for your herds 🐑🐑🐑🐑 to reach immunity? Now you can simulate [serial passaging](https://en.wikipedia.org/wiki/Serial_passage) 🧫🧫🧫🧫 in your web browser instead of serial passaging IRL! MemeLab is a toy model and Javascript contagion simulator. Use it to see the effect of masks and vaccines against [pathogens.](https://en.wikipedia.org/wiki/Memetics)
+Are you an armchair epidemiologist tired of waiting for your herds 🐑🐑🐑🐑 to reach immunity? Now you can simulate [serial passaging](https://en.wikipedia.org/wiki/Serial_passage) 🧫🧫🧫🧫 in your web browser instead of serial passaging IRL! MemeLab is a toy model and Javascript contagion simulator. Use it to see the effect of masks and vaccines against [pathogens.](https://en.wikipedia.org/wiki/Memetics)
 
 ## Model
 
