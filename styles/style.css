@@ -285,3 +285,8 @@
   font-weight: 900;
   font-size: 0.9vw;
 }
+#horsepill{
+  float: left;
+  width:10%;
+  margin-top:2%;
+}
