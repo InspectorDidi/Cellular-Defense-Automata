@@ -636,7 +636,7 @@ class MemeSelector {
       ['Attack Rate', 0, 100, 18, true],
       ['Range', 1, 6, 1, false],
     ],'SARS-2: Wild-Type':[
-      ['Kill Rate', 0, 100, 2, true],
+      ['Kill Rate', 0, 100, 1, true],
       ['Immunity Wane Rate', 0, 100, 1, true],
       ['Incubation', 1, 100, 6, false],
       ['Infectious', 1, 100, 4, false],
@@ -914,5 +914,16 @@ class Enviroment {
   }
 }
 
+class horsePills {
+  constructor() {
+    let a = 0;
+  } update() {
+    let currentPills = Number(document.getElementById("pillCount").innerHTML);
+    currentPills += 1;
+    document.getElementById("pillCount").innerHTML = currentPills.toString();
+  }
+}
+
+let pills = new horsePills();
 let env = new Enviroment(new Game('Emoji'));
 env.update();
