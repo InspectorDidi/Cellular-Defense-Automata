@@ -127,6 +127,7 @@
   position: relative;
   width: 70%;
 }
+
 #select:hover {
   width: 50%;
   margin-top:-55%;
