@@ -159,7 +159,8 @@ class Defense {
     this.settings = settings;
     this.rate = settings['Rate'] / 100;
     this.protection = (1.0 - settings['Protection'] / 100);
-    this.dampening = (1.0 - settings['Dampening'] / 100);
+    this.
+    ening = (1.0 - settings['Source Control'] / 100);
     this.mortalityReduction = (1.0 - settings['Mortality Reduction'] / 100);
   }
 }
@@ -797,7 +798,7 @@ class Enviroment {
       // Face masks can reduce mortality, see:
       // https://consultqd.clevelandclinic.org/face-masks-reduce-risk-of-covid-19-infection-but-should-be-used-with-other-interventions/
       ['Protection', 0, 100, 20, true],
-      ['Dampening', 0, 100, 81, true],
+      ['Source Control', 0, 100, 81, true],
       ['Mortality Reduction', 0, 100, 0, true],
       ['Rate', 0, 100, 50, true],
     ];
@@ -805,7 +806,7 @@ class Enviroment {
       // These are the defualt settings for surgical masks.
       // id, min, max, defualt, displayPercent,
       ['Protection', 0, 25, 80, true],
-      ['Dampening', 0, 25, 0, true],
+      ['Source Control', 0, 25, 0, true],
       ['Mortality Reduction', 0, 100, 80, true],
       ['Rate', 0, 100, 12, true],
     ];
