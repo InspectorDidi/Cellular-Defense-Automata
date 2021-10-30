@@ -30,7 +30,7 @@ A virus that clones itself too prolifically within one computer will soon be det
 
 A virus that is too virulent will be rapidly detected and scotched. A virus that instantly and catastrophically sabotages every computer in which it finds itself will not find itself in many computers. It may have a most amusing effect on one computer ---- erase an entire doctoral thesis or something equally side-splitting --- but it won't spread as an epidemic.
 
-Some viruses, therefore, are designed to have an effect that is small enough to be difficult to detect, but which may nevertheless be extremely damaging. 
+Some viruses, therefore, are designed to have an effect that is small enough to be difficult to detect, but which may nevertheless be extremely damaging. - [viruses of the mind](http://www.inf.fu-berlin.de/lehre/pmo/eng/Dawkins-MindViruses.pdf)
 
 Cruise ships, airplanes, trains, buses, gyms, [places of worship](https://edmonton.ctvnews.ca/alta-pastor-charged-with-violating-public-health-act-still-in-custody-for-refusing-conditions-rcmp-1.5313426), or nearly any enclosed environment can be modelled in a similar way as a social network can be. You might not think you are connected to everyone you share aire with.
 
