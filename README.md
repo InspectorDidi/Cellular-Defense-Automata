@@ -3,7 +3,7 @@
 
 ![](/assets/MemeLabIOAE.svg)
 
-Are you an armchair epidemiologist tired of waiting for your herds 🐑🐑🐑🐑 to reach immunity? Now you can simulate [serial passaging](https://en.wikipedia.org/wiki/Serial_passage) 🧫🧫🧫🧫 in your web browser instead of serial passaging IRL! MemeLab is a toy model and Javascript contagion simulator. Use it to see the effect of masks and vaccines against [pathogens.](https://en.wikipedia.org/wiki/Memetics)
+Are you an armchair epidemiologist tired of waiting for your herds 🐑🐑🐑🐑 to reach immunity? Now you can simulate [serial passaging](https://en.wikipedia.org/wiki/Serial_passage) 🧫🧫🧫🧫 in your web browser [works best in chrome] instead of serial passaging IRL! MemeLab is a toy model and Javascript contagion simulator. Use it to see the effect of masks and vaccines against [pathogens.](https://en.wikipedia.org/wiki/Memetics)
 
 [See Python branch for larger scale simulations.](https://github.com/TheMemeticist/Cellular-Defense-Automata)
 
