@@ -24,7 +24,6 @@ class Meme {
     this.age += 1;
   }
   mutate() {
-    // step forward life cyclec
 
     let mutated = false;
     let mutateRate = 0.01;
@@ -33,6 +32,7 @@ class Meme {
       mutated = true;
     }
     if (new Dice().roll(mutateRate)) {
+      // mutation rate not added to phenotype yet
       //this.genes["Decay Rate"] = Math.round(Math.random() * 15);
       mutated = true;
     }
@@ -129,7 +129,7 @@ class Cell {
     // Calculate the attack rate for this cell with X defense(s) and Y Virus
     let attackRate = virus.genes['Attack Rate'] / 100;
     this.defenses.forEach((shield) => {
-      attackRate = attackRate * shield.dampening;
+      attackRate = attackRate * shield.sourceControl;
     });
     return attackRate;
   }
@@ -159,8 +159,7 @@ class Defense {
     this.settings = settings;
     this.rate = settings['Rate'] / 100;
     this.protection = (1.0 - settings['Protection'] / 100);
-    this.
-    ening = (1.0 - settings['Source Control'] / 100);
+    this.sourceControl = (1.0 - settings['Source Control'] / 100);
     this.mortalityReduction = (1.0 - settings['Mortality Reduction'] / 100);
   }
 }
@@ -914,7 +913,6 @@ class Enviroment {
     }
   }
 }
-
 class horsePills {
   constructor() {
     let a = 0;
